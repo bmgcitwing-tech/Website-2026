@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BM Global Careers</title>
+
+    <!-- begin::global styles -->
+    <link rel="stylesheet" href="vendors/bundle.css" type="text/css">
+    <!-- end::global styles -->
+
+    <!-- begin::datepicker -->
+    <link rel="stylesheet" href="vendors/datepicker/daterangepicker.css">
+    <link rel="stylesheet" href="vendors/dataTable/responsive.bootstrap.min.css" type="text/css">
+    <!-- begin::datepicker -->
+
+    <!-- begin::vmap -->
+    <link rel="stylesheet" href="vendors/vmap/jqvmap.min.css">
+    <!-- begin::vmap -->
+
+    <!-- begin::custom styles -->
+    <link rel="stylesheet" href="css/app.min.css" type="text/css">
+    <link rel="stylesheet" href="css/custom.css" type="text/css">
+    <link rel="stylesheet" href="css/themify-icons.css" type="text/css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link href="css/editor.css" type="text/css" rel="stylesheet"/>
+    <!-- end::custom styles -->
+
+</head>
+<body>
+<?php 
+include('sessionservices.php');
+?>
+<!-- begin::page loader-->
+<div class="page-loader">
+    <div class="spinner-border"></div>
+    <span>Loading ...</span>
+</div>
+<!-- end::page loader -->
+
+<?php echo $header;?>
+
+<!-- begin::main content -->
+<main class="main-content">
+
+    <div class="container-fluid">
+        <div class="page-header d-md-flex justify-content-between align-items-center">
+            <h4>Update Testimonals Details</h4>
+        </div>
+    </div>
+	<div class="row">
+        <div class="col-md-12">
+			<div class="card">
+                <div class="card-body">
+					<form id="mainform" method="POST" action="" enctype="multipart/form-data">
+						<div class="row">
+						
+							<div class="col-md-3">
+								<div class="form-group">
+									<label>Title : </label>
+									<input type="text" class="form-control" id="title" name="title" placeholder="Enter Title">
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label>Link : </label>
+									<input type="text" class="form-control" id="link" name="link" placeholder="Enter Link">
+									<input type="hidden" class="form-control" id="vcat_dt_id" name="vcat_dt_id" placeholder="Enter Link" value="<?php echo $_GET['id'];?>">
+								</div>
+							</div>
+							
+							<div class="col-md-12 text-center">
+								<div class="form-group">
+									<button type="button" name="submit" id="submit" class="btn btn-success" style="font-weight:bold;text-align:center">Update</button>
+									<a href="youtube_details.php"><button type="button" class="btn btn-danger cancelbut" style="font-weight:bold;text-align:center">Cancel</button></a>
+								</div>
+							</div>
+							<div class="col-md-12 text-center">
+								<div class="form-group">
+									<span id="msg" style="font-weight:bold;margin-top:7px;"></span>
+								</div>
+							</div>
+						</div>
+                    </form>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+				<button type="button" class="btn btn-success sweet-delete" style="display:none"></button>
+				<button type="button" class="btn btn-success sweet-insert" style="display:none"></button>
+				<button type="button" class="btn btn-success sweet-update" style="display:none"></button>
+							<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalCenterTitle">Category Details</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+											<div class="row">
+												<div class="col-md-12">
+													<form id="catform" method="POST" action="" enctype="multipart/form-data">
+														<div class="row">
+															<div class="col-md-6">
+																<div class="form-group" style="text-align:left;">
+																	<input type="text" class="form-control" id="cat_name" name="cat_name" placeholder="Enter Category Name">
+																</div>
+															</div>
+															<input type="hidden" id="cat_req" name="req">
+															<input type="hidden" id="upd_cat_id" name="upd_cat_id">
+															<div class="col-md-6">
+																<div class="form-group" style="text-align:left;">
+																	<button type="submit" name="submit" id="cat_submit" class="btn btn-success">Save</button>
+																</div>
+															</div>
+															<div class="col-md-12">
+																<div class="form-group">
+																	<span id="cat_msg" style="font-weight:bold"></span>
+																</div>
+															</div>
+														</div>
+													</form>
+													<hr/>
+												   <table id="catgrid" class="table table-striped table-bordered" width="100%" cellspacing="0">
+													<thead>
+														<tr>
+															<th>S.no</th>
+															<th>Category</th>
+															<th>Last&nbsp;Update</th>
+															<th>Action</th>
+														</tr>
+													</thead>
+													</table>
+												</div>
+											</div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+<script src="vendors/bundle.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		<script src="js/editor.js"></script>
+<!-- end::global scripts -->
+<script src="vendors/dataTable/jquery.dataTables.min.js"></script>
+<script src="vendors/dataTable/dataTables.bootstrap4.min.js"></script>
+<script src="vendors/dataTable/dataTables.responsive.min.js"></script>
+<script src="js/examples/datatable.js"></script>
+<!-- begin::charts -->
+<script src="vendors/charts/chartjs/chart.min.js"></script>
+<script src="vendors/charts/peity/jquery.peity.min.js"></script>
+<script src="js/examples/charts/chartjs.js"></script>
+<script src="js/examples/charts/peity.js"></script>
+<!-- end::charts -->
+
+<!-- begin::daterangepicker -->
+<script src="vendors/datepicker/daterangepicker.js"></script>
+<script src="js/examples/datepicker.js"></script>
+<!-- end::daterangepicker -->
+
+<!-- begin::dashboard -->
+<script src="js/examples/dashboard.js"></script>
+<!-- end::dashboard -->
+
+<!-- begin::vamp -->
+<script src="vendors/vmap/jquery.vmap.min.js"></script>
+<script src="vendors/vmap/maps/jquery.vmap.usa.js"></script>
+<script src="js/examples/vmap.js"></script>
+<!-- end::vamp -->
+
+<!-- begin::custom scripts -->
+<script src="js/custom.js"></script>
+<script src="js/app.min.js"></script>
+<script src="js/examples/sweet-alert.js"></script>
+<!-- end::custom scripts -->
+
+</body>
+<style>
+@media(min-width:992px){
+	.navbar-nav{
+		display:block!important;
+		width:100%;
+	}
+	.userdiv{
+		float:right;
+	}
+	#submit{
+		margin-top:32px;
+	}
+	.cancelbut{
+		margin-top:32px;
+	}
+}
+
+@media(max-width:480px){
+	nav.navbar .header-logo a img{
+		width:180px;
+	}
+}
+</style>
+<script>
+$(document).ready(function(){
+
+	if($("#send_notification").prop('checked')==true){
+                   
+                   $("#send_notification").val("1");
+               }
+               else{
+                 
+                   $("#send_notification").val("0");
+               }
+
+
+
+		$("#send_notification").click(function(){
+			if($("#send_notification").prop('checked')==true){
+				
+				$("#send_notification").val("1");
+			}
+			else{
+				
+				$("#send_notification").val("0");
+			}
+			});
+	$('#catgrid').DataTable({
+		"bProcessing": true,
+         "serverSide": true,
+		 "responsive": true,
+         "ajax":{
+            url :"phpservices/cat_grid.php", // json datasource
+            type: "post",  // type of method  ,GET/POST/DELETE
+            error: function(){
+              $("#catgrid").css("display","none");
+            }
+          }
+	});	
+
+$.ajax({
+		type: "POST",
+		url: "phpservices/youtube_autobind.php",
+		dataType:'JSON',
+		data: {vcat_dt_id:<?php echo $_GET['id'];?>},
+		success: function(result) {
+				$("#title").val(result.title);
+				$("#link").val(result.link);
+				setTimeout(function(){
+					$("#vcat_id").val(result.vcat_id);
+				},500);
+		},error:function(xhr,status,error){
+			console.log(JSON.stringify(xhr,status,error));
+		}
+	});		
+	
+$.ajax({
+		type: "POST",
+		url: "phpservices/cat_dropdown.php",
+		success: function(result) {
+			var sid=result.s_id;
+			var sname=result.s_name;
+			var d_length=result.s_id.length;
+			var d_data='<option value="">Select Category</option>';
+			for(var i=0;i<=d_length-1;i++){
+				d_data +='<option value="'+sid[i]+'">'+sname[i]+'</option>';
+			}
+			$("#vcat_id").removeAttr("disabled");
+			$("#vcat_id").append(d_data);
+			$(".page-loader").hide();	
+		}							
+});
+	
+$("#cat_add_but").click(function(){
+	$("#cat_req").val('INS_CAT');
+});
+	
+	$( "#cat_submit" ).click(function(e) {
+		e.preventDefault();
+			if($("#cat_name").val()==""){
+				$("#cat_msg").css("color","red").html("* Enter Category Name");
+				setTimeout(function(){$("#cat_msg").html('')},3000);
+				return false;
+			}
+			else{
+				$("#cat_msg").css("color","green").html("Processing . . .");
+				$.ajax({
+						type: "POST",
+						url: "phpservices/cat_design_functions.php",
+						dataType:'json',
+						data: {upd_cat_id:$("#upd_cat_id").val(),cat_name:$("#cat_name").val(),req:$("#cat_req").val()},
+						success: function(result) {
+							if(result.op==1){
+								$("#cat_msg").css("color","green").html("Saved Successfully !");
+								setTimeout(function(){
+									$("#cat_msg").html('');
+									location.reload();
+								},2000);
+								if($("#cat_req").val()=='INS_CAT'){
+									$(".sweet-insert").click();
+									$("#cat_name").val('');
+								}
+								else if($("#cat_req").val()=='UPD_CAT'){
+									$(".sweet-update").click();
+									$("#cat_name").val('');
+									$("#upd_cat_id").val('');
+									$("#cat_req").val('INS_CAT');
+								}
+								$('#catgrid').DataTable().ajax.reload();
+								//$("#exampleModalCenter").css('display','none');
+							}
+							else{
+								$("#cat_msg").css("color","red").html(result.op);
+							}
+						},error:function(xhr,status,error){
+							console.log(JSON.stringify(xhr,status,error));
+						}
+					});
+			}
+	});	
+	
+	$(document).on('click','.catUpdateTriger', function(){
+		var updid=$(this).data('value');
+		$("#upd_cat_id").val(updid);
+			$("#cat_req").val('UPD_CAT');
+			$.ajax({
+					type: "POST",
+					url: "phpservices/cat_design_functions.php",
+					dataType:'json',
+					data: {upd_cat_id:updid,cat_name:$("#cat_name").val(),req:"AUB_CAT"},
+					success: function(result) {
+						$("#cat_name").val(result.op[0]['title']);
+					},error:function(xhr,status,error){
+						console.log(JSON.stringify(xhr,status,error));
+					}
+			});
+	});	
+		
+	$(document).on('click','.catDeleteTriger', function(){
+		var delid=$(this).data('value');
+			var alertmsg=confirm("Do you want to Delete ?");
+			if (alertmsg == true) {
+				$.ajax({
+							type: "POST",
+							url: "phpservices/cat_design_functions.php",
+							dataType:'json',
+							data: {delid:delid,cat_name:$("#cat_name").val(),req:"DEL_CAT"},
+							success: function(result) {
+								if(result.op==1){
+									$("#cat_msg").css("color","#fff").html("Successfully Deleted !");
+									$('#catgrid').DataTable().ajax.reload();
+									$(".sweet-delete").click();
+									setTimeout(function(){
+										$("#cat_msg").html('');
+										location.reload();
+									},1500);
+								}
+								else{
+									$("#cat_msg").html(result.op);
+								}
+							},error:function(xhr,status,error){
+								console.log(JSON.stringify(xhr,status,error));
+							}
+						});
+			}
+	});
+
+	$("#submit").click(function(e){
+		e.preventDefault();
+		if($("#link").val()==''){
+			$("#msg").css("color","red").html('* Enter Link');
+			setTimeout(function(){$("#msg").html('')},3000);
+			return false;
+		}
+		else{
+			$("#msg").css("color","green").html("Processing . . .");
+			$.ajax({
+					type: "POST",
+					url: "phpservices/update_youtube.php",
+					dataType:'json',
+					data: $("#mainform").serialize(),
+					success: function(result) {
+						console.log(result.op);
+						if(result.op==1){
+							$("#msg").css("color","green").html("Successfully Updated !");
+							setTimeout(function(){
+								window.location.href='youtube_details.php';
+							},1500);
+						}
+						else{
+							$("#msg").html(result.op);
+						}
+					},error:function(xhr,status,error){
+						console.log(JSON.stringify(xhr,status,error));
+					}
+				});
+		}
+	});	
+	
+});
+</script>
+</html>
