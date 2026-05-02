@@ -63,7 +63,7 @@ export default function Navbar() {
             </Link>
 
             {/* ── Desktop Nav ── */}
-            <nav style={{ display: "flex", alignItems: "center", gap: 4 }} className="hidden lg:flex">
+            <nav style={{ alignItems: "center", gap: 4 }} className="hidden lg:flex">
               {navLinks.map((link) =>
                 link.dropdown ? (
                   <div
@@ -162,13 +162,13 @@ export default function Navbar() {
 
             {/* ── Hamburger ── */}
             <button
-              className="lg:hidden"
+              className="flex lg:hidden"
               onClick={() => setMobileOpen(!mobileOpen)}
               style={{
                 width: 42, height: 42, borderRadius: 10,
                 background: "rgba(255,255,255,0.05)",
                 border: "1px solid rgba(255,255,255,0.09)",
-                display: "flex", flexDirection: "column",
+                flexDirection: "column",
                 alignItems: "center", justifyContent: "center",
                 gap: 5, cursor: "pointer",
               }}
