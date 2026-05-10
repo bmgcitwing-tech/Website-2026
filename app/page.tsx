@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { VIDEOS } from "@/lib/videos";
+import GlobalPresenceSection from "@/components/GlobalPresenceSection";
 
 /* ─── Animated number counter ─── */
 function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
@@ -261,6 +262,9 @@ export default function HomePage() {
           </motion.div>
         </motion.div>
       </section>
+
+      {/* ═══════════════════════════════════════ GLOBAL PRESENCE ═══════════════════════════════════════ */}
+      <GlobalPresenceSection />
 
       {/* ═══════════════════════════════════════ ABOUT ═══════════════════════════════════════ */}
       <section style={{ padding: "120px 0", background: "var(--bg-1)", position: "relative", overflow: "hidden" }}>

@@ -1,0 +1,806 @@
+export interface University {
+  name: string;
+  city: string;
+  qsRank: number | string;
+  totalPrograms: number;
+  popularPrograms: string[];
+  annualFee: string;
+  intakes: string[];
+  website: string;
+}
+
+export interface CountryInfo {
+  key: string;
+  numericCode: string;
+  name: string;
+  flag: string;
+  totalUniversities: number;
+  currency: string;
+  coordinates: [number, number]; // [lon, lat] for map marker
+  highlights: string[];
+  universities: University[];
+}
+
+// ─── helper to keep lines shorter ───
+const u = (
+  name: string, city: string, qsRank: number | string, totalPrograms: number,
+  popularPrograms: string[], annualFee: string, intakes: string[], website: string
+): University => ({ name, city, qsRank, totalPrograms, popularPrograms, annualFee, intakes, website });
+
+export const COUNTRIES: CountryInfo[] = [
+  // ════════════════════════════════════ USA ════════════════════════════════════
+  {
+    key: "usa", numericCode: "840", name: "USA", flag: "🇺🇸",
+    totalUniversities: 295, currency: "USD", coordinates: [-98, 39],
+    highlights: ["World #1 higher-education system", "STEM OPT extension up to 3 years", "Hub for Fortune 500 internships"],
+    universities: [
+      u("Massachusetts Institute of Technology (MIT)", "Cambridge, MA", 1, 68, ["Computer Science", "Engineering", "Physics", "Business Analytics"], "$57,500 – $61,000", ["September"], "https://web.mit.edu"),
+      u("Stanford University", "Stanford, CA", 5, 72, ["AI & Machine Learning", "MBA", "Law", "Medicine"], "$58,000 – $62,000", ["September"], "https://www.stanford.edu"),
+      u("Harvard University", "Cambridge, MA", 4, 65, ["Business Administration", "Law", "Public Health", "Economics"], "$57,000 – $60,000", ["September"], "https://www.harvard.edu"),
+      u("California Institute of Technology (Caltech)", "Pasadena, CA", 15, 42, ["Applied Physics", "Aerospace Engineering", "Computer Science", "Chemistry"], "$58,000 – $60,000", ["September"], "https://www.caltech.edu"),
+      u("University of Chicago", "Chicago, IL", 11, 62, ["Economics", "MBA (Booth)", "Law", "Sociology"], "$60,000 – $64,000", ["September"], "https://www.uchicago.edu"),
+      u("University of Pennsylvania (UPenn)", "Philadelphia, PA", 12, 60, ["Wharton MBA", "Finance", "Nursing", "Engineering"], "$60,000 – $63,000", ["September"], "https://www.upenn.edu"),
+      u("Johns Hopkins University", "Baltimore, MD", 28, 58, ["Public Health", "Medicine", "Biomedical Engineering", "International Relations"], "$58,000 – $62,000", ["September"], "https://www.jhu.edu"),
+      u("Yale University", "New Haven, CT", 14, 55, ["Law", "MBA (SOM)", "Medicine", "Fine Arts"], "$60,000 – $64,000", ["September"], "https://www.yale.edu"),
+      u("Princeton University", "Princeton, NJ", 16, 50, ["Engineering", "Public Affairs", "Economics", "Mathematics"], "$56,000 – $60,000", ["September"], "https://www.princeton.edu"),
+      u("Cornell University", "Ithaca, NY", 13, 70, ["Hotel Administration", "Engineering", "Agriculture", "Architecture"], "$59,000 – $63,000", ["August"], "https://www.cornell.edu"),
+      u("Columbia University", "New York, NY", 22, 75, ["Journalism", "International Affairs", "Finance", "Engineering"], "$61,000 – $65,000", ["September", "January"], "https://www.columbia.edu"),
+      u("University of California, Berkeley (UCB)", "Berkeley, CA", 10, 78, ["Computer Science", "Data Science", "Law", "Environmental Studies"], "$44,000 – $58,000", ["August", "January"], "https://www.berkeley.edu"),
+      u("University of California, Los Angeles (UCLA)", "Los Angeles, CA", 44, 82, ["Film & Media", "Medicine", "Computer Science", "Psychology"], "$43,000 – $56,000", ["September"], "https://www.ucla.edu"),
+      u("Northwestern University", "Evanston, IL", 33, 65, ["MBA (Kellogg)", "Journalism", "Engineering", "Law"], "$60,000 – $64,000", ["September"], "https://www.northwestern.edu"),
+      u("University of Michigan, Ann Arbor", "Ann Arbor, MI", 23, 72, ["Business (Ross)", "Engineering", "Medicine", "Law"], "$50,000 – $58,000", ["September"], "https://www.umich.edu"),
+      u("Carnegie Mellon University (CMU)", "Pittsburgh, PA", 52, 60, ["Computer Science", "Robotics", "Design", "Business (Tepper)"], "$58,000 – $62,000", ["September"], "https://www.cmu.edu"),
+      u("New York University (NYU)", "New York, NY", 38, 102, ["Business (Stern)", "Arts", "Law", "Hospitality Management"], "$56,000 – $60,000", ["September", "January"], "https://www.nyu.edu"),
+      u("Duke University", "Durham, NC", 66, 62, ["MBA (Fuqua)", "Medicine", "Law", "Public Policy"], "$59,000 – $63,000", ["August"], "https://www.duke.edu"),
+      u("Washington University in St. Louis (WashU)", "St. Louis, MO", 79, 58, ["Social Work", "Medicine", "Business (Olin)", "Law"], "$58,000 – $62,000", ["September"], "https://www.wustl.edu"),
+      u("University of California, San Diego (UCSD)", "La Jolla, CA", 65, 76, ["Bioengineering", "Computer Science", "Marine Biology", "Economics"], "$43,000 – $56,000", ["September"], "https://www.ucsd.edu"),
+      u("University of Texas at Austin (UT Austin)", "Austin, TX", 67, 80, ["Computer Science", "Business (McCombs)", "Engineering", "Law"], "$38,000 – $52,000", ["August", "January"], "https://www.utexas.edu"),
+      u("Georgia Institute of Technology (Georgia Tech)", "Atlanta, GA", 83, 68, ["Engineering", "Computer Science", "Industrial Design", "Business"], "$34,000 – $48,000", ["August", "January"], "https://www.gatech.edu"),
+      u("University of Wisconsin-Madison", "Madison, WI", 75, 72, ["Agriculture", "Engineering", "Business", "Life Sciences"], "$38,000 – $52,000", ["September"], "https://www.wisc.edu"),
+      u("University of Southern California (USC)", "Los Angeles, CA", 113, 75, ["Film (Cinematic Arts)", "Business (Marshall)", "Engineering", "Law"], "$62,000 – $66,000", ["August", "January"], "https://www.usc.edu"),
+      u("Ohio State University", "Columbus, OH", 171, 80, ["Business (Fisher)", "Engineering", "Medicine", "Education"], "$32,000 – $46,000", ["August", "January"], "https://www.osu.edu"),
+      u("University of North Carolina, Chapel Hill", "Chapel Hill, NC", 118, 70, ["Business (Kenan-Flagler)", "Public Health", "Journalism", "Medicine"], "$36,000 – $50,000", ["August"], "https://www.unc.edu"),
+      u("Purdue University", "West Lafayette, IN", 109, 74, ["Engineering", "Agriculture", "Computer Science", "Aviation"], "$28,000 – $42,000", ["August", "January"], "https://www.purdue.edu"),
+      u("Penn State University", "University Park, PA", 201, 78, ["Business", "Engineering", "Agriculture", "Education"], "$36,000 – $48,000", ["August", "January"], "https://www.psu.edu"),
+      u("University of Illinois Urbana-Champaign (UIUC)", "Champaign, IL", 73, 75, ["Computer Science", "Engineering", "Business", "Fine Arts"], "$33,000 – $47,000", ["August", "January"], "https://illinois.edu"),
+      u("Texas A&M University", "College Station, TX", 199, 72, ["Engineering", "Agriculture", "Business", "Veterinary Medicine"], "$32,000 – $44,000", ["August", "January"], "https://www.tamu.edu"),
+      u("University of Minnesota", "Minneapolis, MN", 192, 70, ["Business (Carlson)", "Engineering", "Medicine", "Public Health"], "$32,000 – $46,000", ["September", "January"], "https://twin-cities.umn.edu"),
+      u("University of Virginia (UVA)", "Charlottesville, VA", 178, 64, ["Law", "Business (Darden)", "Medicine", "Engineering"], "$52,000 – $60,000", ["August"], "https://www.virginia.edu"),
+      u("University of Florida", "Gainesville, FL", 167, 75, ["Engineering", "Business", "Agriculture", "Medicine"], "$28,500 – $38,000", ["August", "January"], "https://www.ufl.edu"),
+      u("Boston University (BU)", "Boston, MA", 87, 72, ["Business (Questrom)", "Engineering", "Law", "Public Health"], "$56,000 – $60,000", ["September", "January"], "https://www.bu.edu"),
+      u("University of Rochester", "Rochester, NY", 316, 55, ["Optics", "Music (Eastman)", "Business (Simon)", "Medicine"], "$60,000 – $64,000", ["August"], "https://www.rochester.edu"),
+      u("Emory University", "Atlanta, GA", 256, 56, ["Business (Goizueta)", "Medicine", "Law", "Public Health"], "$56,000 – $60,000", ["September"], "https://www.emory.edu"),
+      u("Vanderbilt University", "Nashville, TN", 159, 58, ["Medicine", "Law", "Education (Peabody)", "Engineering"], "$58,000 – $62,000", ["August"], "https://www.vanderbilt.edu"),
+      u("Georgetown University", "Washington, DC", 266, 62, ["International Affairs (SFS)", "Law", "Business (McDonough)", "Medicine"], "$58,000 – $62,000", ["September"], "https://www.georgetown.edu"),
+      u("University of Notre Dame", "Notre Dame, IN", 215, 55, ["Business (Mendoza)", "Law", "Engineering", "Theology"], "$58,000 – $62,000", ["August"], "https://www.nd.edu"),
+      u("Rice University", "Houston, TX", 204, 50, ["Engineering", "Business (Jones)", "Architecture", "Music"], "$52,000 – $56,000", ["August"], "https://www.rice.edu"),
+      u("Tufts University", "Medford, MA", 240, 52, ["International Relations", "Engineering", "Medicine", "Veterinary"], "$60,000 – $64,000", ["September"], "https://www.tufts.edu"),
+      u("Case Western Reserve University", "Cleveland, OH", 268, 54, ["Engineering", "Medicine", "Law", "Management (Weatherhead)"], "$56,000 – $60,000", ["August"], "https://www.case.edu"),
+      u("Northeastern University", "Boston, MA", 316, 70, ["Computer Science", "Engineering", "Business", "Law"], "$58,000 – $62,000", ["September", "January"], "https://www.northeastern.edu"),
+      u("Rutgers University", "New Brunswick, NJ", 261, 72, ["Business", "Pharmacy", "Engineering", "Public Affairs"], "$33,000 – $44,000", ["September", "January"], "https://www.rutgers.edu"),
+      u("University at Buffalo (SUNY)", "Buffalo, NY", "401–450", 70, ["Engineering", "Business", "Architecture", "Pharmacy"], "$26,000 – $38,000", ["August", "January"], "https://www.buffalo.edu"),
+      u("George Washington University (GWU)", "Washington, DC", "541–550", 68, ["International Affairs", "Business", "Law", "Public Health"], "$58,000 – $62,000", ["September", "January"], "https://www.gwu.edu"),
+      u("American University", "Washington, DC", "651–700", 60, ["International Service", "Law", "Business (Kogod)", "Communications"], "$52,000 – $56,000", ["August", "January"], "https://www.american.edu"),
+      u("Syracuse University", "Syracuse, NY", "601–650", 62, ["Communications (Newhouse)", "Architecture", "Business (Whitman)", "Law"], "$54,000 – $58,000", ["August", "January"], "https://www.syracuse.edu"),
+      u("University of Illinois Chicago (UIC)", "Chicago, IL", "401–450", 68, ["Business", "Engineering", "Medicine", "Architecture"], "$30,000 – $42,000", ["August", "January"], "https://www.uic.edu"),
+      u("Drexel University", "Philadelphia, PA", "601–650", 65, ["Engineering", "Business (LeBow)", "Design", "Nursing"], "$53,000 – $57,000", ["September", "January", "June"], "https://www.drexel.edu"),
+      u("University of Miami", "Miami, FL", "401–450", 65, ["Business (Miami Herbert)", "Marine Science", "Medicine", "Architecture"], "$54,000 – $58,000", ["August", "January"], "https://www.miami.edu"),
+      u("Temple University", "Philadelphia, PA", "601–650", 70, ["Business (Fox)", "Law", "Media", "Engineering"], "$30,000 – $42,000", ["August", "January"], "https://www.temple.edu"),
+      u("Wayne State University", "Detroit, MI", "801–1000", 62, ["Engineering", "Medicine", "Law", "Business"], "$26,000 – $38,000", ["September", "January"], "https://wayne.edu"),
+      u("University of Denver (DU)", "Denver, CO", "801–1000", 58, ["Business (Daniels)", "Law", "International Studies", "Arts"], "$52,000 – $56,000", ["September", "January"], "https://www.du.edu"),
+      u("Wake Forest University", "Winston-Salem, NC", "651–700", 50, ["Business", "Law", "Medicine", "Liberal Arts"], "$56,000 – $60,000", ["August"], "https://www.wfu.edu"),
+      u("Arizona State University (ASU)", "Tempe, AZ", 175, 80, ["Engineering", "Business (W.P. Carey)", "Design", "Journalism"], "$28,000 – $40,000", ["August", "January"], "https://www.asu.edu"),
+      u("University of Arizona", "Tucson, AZ", "351–400", 72, ["Business (Eller)", "Optical Sciences", "Engineering", "Medicine"], "$33,000 – $44,000", ["August", "January"], "https://www.arizona.edu"),
+      u("Michigan State University", "East Lansing, MI", "201–250", 75, ["Agriculture", "Business (Broad)", "Engineering", "Vet Medicine"], "$40,000 – $52,000", ["August", "January"], "https://msu.edu"),
+      u("Colorado State University", "Fort Collins, CO", "401–450", 65, ["Engineering", "Agriculture", "Business", "Vet Medicine"], "$28,000 – $40,000", ["August", "January"], "https://www.colostate.edu"),
+    ],
+  },
+
+  // ════════════════════════════════════ UK ════════════════════════════════════
+  {
+    key: "uk", numericCode: "826", name: "United Kingdom", flag: "🇬🇧",
+    totalUniversities: 134, currency: "GBP", coordinates: [-3, 54],
+    highlights: ["2-year Graduate Route Post-Study Visa", "Shorter degrees — 3-yr BSc, 1-yr MSc", "Russell Group global research excellence"],
+    universities: [
+      u("University of Oxford", "Oxford", 3, 62, ["PPE", "Medicine", "Law", "Computer Science"], "£26,000 – £39,000", ["October"], "https://www.ox.ac.uk"),
+      u("University of Cambridge", "Cambridge", 2, 58, ["Engineering", "Natural Sciences", "Mathematics", "Economics"], "£24,000 – £36,000", ["October"], "https://www.cam.ac.uk"),
+      u("Imperial College London", "London", 6, 61, ["Engineering", "Medicine", "Data Science", "Business"], "£33,000 – £45,000", ["October"], "https://www.imperial.ac.uk"),
+      u("University College London (UCL)", "London", 9, 72, ["Architecture", "Laws", "Medicine", "Pharmacology"], "£28,000 – £38,000", ["September"], "https://www.ucl.ac.uk"),
+      u("University of Edinburgh", "Edinburgh", 27, 66, ["Informatics", "Medicine", "Business", "Philosophy"], "£22,000 – £32,000", ["September"], "https://www.ed.ac.uk"),
+      u("University of Manchester", "Manchester", 32, 82, ["Business", "Engineering", "Medicine", "Social Sciences"], "£20,000 – £30,000", ["September", "January"], "https://www.manchester.ac.uk"),
+      u("King's College London (KCL)", "London", 40, 76, ["Law", "Dentistry", "Nursing", "International Relations"], "£23,000 – £35,000", ["September", "January"], "https://www.kcl.ac.uk"),
+      u("London School of Economics (LSE)", "London", 45, 55, ["Economics", "Finance", "Accounting", "International Development"], "£22,000 – £32,000", ["September"], "https://www.lse.ac.uk"),
+      u("University of Bristol", "Bristol", 54, 68, ["Engineering", "Medicine", "Law", "Aerospace"], "£22,000 – £30,000", ["September"], "https://www.bristol.ac.uk"),
+      u("University of Warwick", "Coventry", 67, 52, ["Business (WBS)", "Computer Science", "Mathematics", "Engineering"], "£21,000 – £29,000", ["September", "January"], "https://www.warwick.ac.uk"),
+      u("University of Glasgow", "Glasgow", 73, 65, ["Medicine", "Law", "Engineering", "Business"], "£20,000 – £28,000", ["September"], "https://www.gla.ac.uk"),
+      u("University of Leeds", "Leeds", 75, 72, ["Business", "Engineering", "Medicine", "Media"], "£20,000 – £28,000", ["September", "January"], "https://www.leeds.ac.uk"),
+      u("University of Southampton", "Southampton", 81, 64, ["Engineering", "Electronics", "Business", "Medicine"], "£20,000 – £28,000", ["September", "January"], "https://www.soton.ac.uk"),
+      u("University of Birmingham", "Birmingham", 84, 70, ["Business", "Engineering", "Medicine", "Law"], "£20,000 – £28,000", ["September"], "https://www.birmingham.ac.uk"),
+      u("University of St Andrews", "St Andrews", 96, 50, ["Medicine", "International Relations", "Chemistry", "Philosophy"], "£20,000 – £28,000", ["September"], "https://www.st-andrews.ac.uk"),
+      u("University of Sheffield", "Sheffield", 97, 68, ["Engineering", "Medicine", "Architecture", "Business"], "£19,000 – £27,000", ["September", "January"], "https://www.sheffield.ac.uk"),
+      u("University of Nottingham", "Nottingham", 100, 65, ["Medicine", "Business", "Engineering", "Pharmacy"], "£19,000 – £27,000", ["September", "January"], "https://www.nottingham.ac.uk"),
+      u("Queen Mary University of London (QMUL)", "London", 113, 62, ["Law", "Medicine", "Engineering", "Economics"], "£20,000 – £28,000", ["September"], "https://www.qmul.ac.uk"),
+      u("University of Exeter", "Exeter", 150, 60, ["Business", "Law", "Engineering", "Humanities"], "£19,000 – £26,000", ["September"], "https://www.exeter.ac.uk"),
+      u("Cardiff University", "Cardiff", 151, 62, ["Law", "Medicine", "Engineering", "Dentistry"], "£19,000 – £26,000", ["September"], "https://www.cardiff.ac.uk"),
+      u("University of Bath", "Bath", 151, 50, ["Business", "Engineering", "Architecture", "Sciences"], "£20,000 – £27,000", ["September"], "https://www.bath.ac.uk"),
+      u("University of York", "York", 163, 55, ["Computer Science", "Law", "Music", "Social Sciences"], "£19,000 – £26,000", ["September", "October"], "https://www.york.ac.uk"),
+      u("Durham University", "Durham", 92, 60, ["Business", "Law", "Physics", "Geography"], "£20,000 – £28,000", ["October"], "https://www.dur.ac.uk"),
+      u("Lancaster University", "Lancaster", "201–250", 55, ["Business", "Law", "Engineering", "Sciences"], "£19,000 – £26,000", ["October"], "https://www.lancaster.ac.uk"),
+      u("University of Reading", "Reading", "201–250", 58, ["Business", "Agriculture", "Law", "Meteorology"], "£18,000 – £25,000", ["September", "January"], "https://www.reading.ac.uk"),
+      u("University of Leicester", "Leicester", "301–350", 56, ["Business", "Law", "Engineering", "Medicine"], "£18,000 – £24,000", ["September", "January"], "https://www.le.ac.uk"),
+      u("Loughborough University", "Loughborough", "251–300", 55, ["Sports Science", "Engineering", "Business", "Design"], "£19,000 – £26,000", ["September"], "https://www.lboro.ac.uk"),
+      u("University of Aberdeen", "Aberdeen", "301–350", 52, ["Medicine", "Law", "Business", "Engineering"], "£17,000 – £24,000", ["September"], "https://www.abdn.ac.uk"),
+      u("Heriot-Watt University", "Edinburgh", 354, 55, ["Engineering", "Business", "Computer Science", "Architecture"], "£17,000 – £24,000", ["September"], "https://www.hw.ac.uk"),
+      u("University of Strathclyde", "Glasgow", "301–350", 56, ["Engineering", "Business", "Law", "Sciences"], "£17,000 – £24,000", ["September"], "https://www.strath.ac.uk"),
+      u("University of Dundee", "Dundee", "501–550", 50, ["Medicine", "Dentistry", "Law", "Design"], "£16,000 – £24,000", ["September"], "https://www.dundee.ac.uk"),
+      u("University of Surrey", "Guildford", "301–350", 55, ["Engineering", "Business", "Health Sciences", "Hospitality"], "£19,000 – £26,000", ["September"], "https://www.surrey.ac.uk"),
+      u("University of Sussex", "Brighton", "351–400", 52, ["Law", "Media", "Engineering", "Sciences"], "£18,000 – £25,000", ["September"], "https://www.sussex.ac.uk"),
+      u("University of East Anglia (UEA)", "Norwich", "501–550", 50, ["Medicine", "Law", "Business", "Environmental Sciences"], "£17,000 – £24,000", ["September"], "https://www.uea.ac.uk"),
+      u("Brunel University London", "Uxbridge", "451–500", 52, ["Engineering", "Business", "Design", "Media"], "£18,000 – £25,000", ["September"], "https://www.brunel.ac.uk"),
+      u("City, University of London", "London", "601–650", 55, ["Business (Cass)", "Law", "Journalism", "Engineering"], "£18,000 – £25,000", ["September", "January"], "https://www.city.ac.uk"),
+      u("SOAS University of London", "London", "601–650", 45, ["International Relations", "Law", "Languages", "Development Studies"], "£18,000 – £24,000", ["September"], "https://www.soas.ac.uk"),
+      u("Royal Holloway, University of London", "Egham", "601–650", 48, ["Business", "Media", "Sciences", "Classics"], "£17,000 – £24,000", ["September"], "https://www.royalholloway.ac.uk"),
+      u("Goldsmiths, University of London", "London", "701–750", 45, ["Arts", "Design", "Media", "Social Sciences"], "£17,000 – £24,000", ["September"], "https://www.gold.ac.uk"),
+      u("Aston University", "Birmingham", "651–700", 50, ["Business", "Engineering", "Pharmacy", "Optometry"], "£17,000 – £24,000", ["September"], "https://www.aston.ac.uk"),
+      u("Coventry University", "Coventry", "801–1000", 55, ["Business", "Engineering", "Design", "Nursing"], "£16,000 – £22,000", ["September", "January"], "https://www.coventry.ac.uk"),
+      u("Middlesex University London", "London", "801–1000", 55, ["Business", "Law", "Arts", "Health Sciences"], "£15,000 – £21,000", ["September", "January"], "https://www.mdx.ac.uk"),
+      u("De Montfort University (DMU)", "Leicester", "801–1000", 55, ["Business", "Law", "Arts", "Technology"], "£15,000 – £21,000", ["September", "January"], "https://www.dmu.ac.uk"),
+      u("Oxford Brookes University", "Oxford", "801–1000", 52, ["Business", "Hospitality", "Engineering", "Architecture"], "£15,000 – £21,000", ["September", "January"], "https://www.brookes.ac.uk"),
+      u("University of Portsmouth", "Portsmouth", "801–1000", 55, ["Business", "Criminology", "Engineering", "Computing"], "£15,000 – £20,000", ["September", "January"], "https://www.port.ac.uk"),
+      u("Bournemouth University", "Bournemouth", "801–1000", 52, ["Business", "Media", "Tourism", "Computing"], "£15,000 – £20,000", ["September"], "https://www.bournemouth.ac.uk"),
+      u("University of Lincoln", "Lincoln", "651–700", 50, ["Business", "Agriculture", "Engineering", "Arts"], "£15,000 – £21,000", ["September"], "https://www.lincoln.ac.uk"),
+      u("Liverpool John Moores University (LJMU)", "Liverpool", "801–1000", 55, ["Business", "Engineering", "Arts", "Health Sciences"], "£14,000 – £19,000", ["September"], "https://www.ljmu.ac.uk"),
+      u("Manchester Metropolitan University (MMU)", "Manchester", "801–1000", 60, ["Business", "Arts", "Engineering", "Education"], "£14,000 – £19,000", ["September"], "https://www.mmu.ac.uk"),
+      u("Sheffield Hallam University", "Sheffield", "801–1000", 58, ["Business", "Engineering", "Health Sciences", "Arts"], "£14,000 – £18,000", ["September"], "https://www.shu.ac.uk"),
+      u("Nottingham Trent University (NTU)", "Nottingham", "801–1000", 58, ["Business", "Law", "Arts", "Engineering"], "£14,000 – £19,000", ["September"], "https://www.ntu.ac.uk"),
+    ],
+  },
+
+  // ════════════════════════════════════ CANADA ════════════════════════════════════
+  {
+    key: "canada", numericCode: "124", name: "Canada", flag: "🇨🇦",
+    totalUniversities: 108, currency: "CAD", coordinates: [-96, 60],
+    highlights: ["3-year Post-Graduation Work Permit (PGWP)", "Clear PR pathway via Express Entry", "Co-op programs with paid work terms"],
+    universities: [
+      u("University of Toronto (UofT)", "Toronto, ON", 25, 90, ["Computer Science", "Business (Rotman)", "Medicine", "Engineering"], "CAD $45,000 – $58,000", ["September", "January"], "https://www.utoronto.ca"),
+      u("University of British Columbia (UBC)", "Vancouver, BC", 38, 85, ["Forestry", "Commerce (Sauder)", "Computer Science", "Medicine"], "CAD $38,000 – $52,000", ["September", "January"], "https://www.ubc.ca"),
+      u("McGill University", "Montreal, QC", 30, 78, ["Medicine", "Law", "Engineering", "Management (Desautels)"], "CAD $28,000 – $46,000", ["September", "January"], "https://www.mcgill.ca"),
+      u("McMaster University", "Hamilton, ON", 189, 65, ["Health Sciences", "Engineering", "Business (DeGroote)", "Life Sciences"], "CAD $32,000 – $44,000", ["September", "January"], "https://www.mcmaster.ca"),
+      u("University of Waterloo", "Waterloo, ON", 112, 70, ["Software Engineering", "Math & CS", "Accounting (AFA)", "Applied Health Sciences"], "CAD $38,000 – $52,000", ["September", "January"], "https://www.uwaterloo.ca"),
+      u("University of Alberta", "Edmonton, AB", 111, 72, ["Business", "Law", "Engineering", "Pharmacy"], "CAD $28,000 – $40,000", ["September", "January"], "https://www.ualberta.ca"),
+      u("Western University", "London, ON", 218, 60, ["Business (Ivey)", "Medicine", "Law", "Media & Info"], "CAD $32,000 – $48,000", ["September"], "https://www.uwo.ca"),
+      u("Queen's University", "Kingston, ON", 209, 55, ["Commerce (Smith)", "Law", "Engineering", "Arts & Science"], "CAD $36,000 – $50,000", ["September"], "https://www.queensu.ca"),
+      u("University of Calgary", "Calgary, AB", 182, 68, ["Business (Haskayne)", "Engineering", "Medicine", "Law"], "CAD $28,000 – $40,000", ["September", "January"], "https://www.ucalgary.ca"),
+      u("Dalhousie University", "Halifax, NS", "401–450", 62, ["Medicine", "Law", "Engineering", "Management"], "CAD $26,000 – $38,000", ["September", "January"], "https://www.dal.ca"),
+      u("University of Ottawa", "Ottawa, ON", 203, 65, ["Law", "Medicine", "Management", "Engineering"], "CAD $32,000 – $44,000", ["September", "January"], "https://www.uottawa.ca"),
+      u("Simon Fraser University (SFU)", "Burnaby, BC", 323, 68, ["Computing Science", "Business (Beedie)", "Engineering", "Education"], "CAD $30,000 – $42,000", ["September", "January"], "https://www.sfu.ca"),
+      u("University of Victoria (UVic)", "Victoria, BC", 291, 60, ["Law", "Engineering", "Business", "Fine Arts"], "CAD $28,000 – $40,000", ["September", "January"], "https://www.uvic.ca"),
+      u("University of Saskatchewan", "Saskatoon, SK", "401–450", 62, ["Agriculture", "Engineering", "Medicine", "Business (Edwards)"], "CAD $24,000 – $36,000", ["September", "January"], "https://www.usask.ca"),
+      u("University of Manitoba", "Winnipeg, MB", "501–550", 62, ["Agriculture", "Engineering", "Medicine", "Business (Asper)"], "CAD $22,000 – $34,000", ["September", "January"], "https://umanitoba.ca"),
+      u("York University", "Toronto, ON", "401–450", 72, ["Business (Schulich)", "Law (Osgoode)", "Film", "Sciences"], "CAD $30,000 – $42,000", ["September", "January"], "https://www.yorku.ca"),
+      u("Toronto Metropolitan University (TMU)", "Toronto, ON", "801–1000", 68, ["Business", "Engineering", "Arts", "Communications"], "CAD $28,000 – $38,000", ["September", "January"], "https://www.torontomu.ca"),
+      u("Carleton University", "Ottawa, ON", "601–650", 65, ["Journalism", "Engineering", "Business", "Public Policy"], "CAD $28,000 – $38,000", ["September", "January"], "https://carleton.ca"),
+      u("Concordia University", "Montreal, QC", "551–600", 68, ["Business (John Molson)", "Fine Arts", "Engineering", "Arts & Science"], "CAD $26,000 – $36,000", ["September", "January"], "https://www.concordia.ca"),
+      u("University of Guelph", "Guelph, ON", "401–450", 62, ["Agriculture", "Business", "Vet Medicine", "Engineering"], "CAD $26,000 – $36,000", ["September", "January"], "https://www.uoguelph.ca"),
+      u("Wilfrid Laurier University", "Waterloo, ON", "801–1000", 55, ["Business (Lazaridis)", "Law", "Social Work", "Sciences"], "CAD $26,000 – $36,000", ["September", "January"], "https://www.wlu.ca"),
+      u("Brock University", "St. Catharines, ON", "801–1000", 55, ["Business (Goodman)", "Education", "Kinesiology", "Sciences"], "CAD $24,000 – $34,000", ["September", "January"], "https://www.brocku.ca"),
+      u("University of Windsor", "Windsor, ON", "801–1000", 55, ["Business (Odette)", "Engineering", "Law", "Education"], "CAD $24,000 – $34,000", ["September", "January"], "https://www.uwindsor.ca"),
+      u("Ontario Tech University", "Oshawa, ON", "801–1000", 50, ["Engineering", "IT", "Business", "Health Sciences"], "CAD $24,000 – $34,000", ["September", "January"], "https://ontariotechu.ca"),
+      u("Trent University", "Peterborough, ON", "801–1000", 48, ["Business Administration", "Indigenous Studies", "Forensic Sciences", "Nursing"], "CAD $22,000 – $32,000", ["September", "January"], "https://www.trentu.ca"),
+      u("University of New Brunswick (UNB)", "Fredericton, NB", "601–650", 55, ["Engineering", "Business", "Law", "Computer Science"], "CAD $22,000 – $32,000", ["September", "January"], "https://www.unb.ca"),
+      u("Memorial University of Newfoundland", "St. John's, NL", "601–650", 55, ["Engineering", "Business", "Medicine", "Marine Studies"], "CAD $20,000 – $30,000", ["September", "January"], "https://www.mun.ca"),
+      u("Saint Mary's University", "Halifax, NS", "801–1000", 45, ["Business", "Sciences", "Arts", "Engineering"], "CAD $20,000 – $28,000", ["September", "January"], "https://www.smu.ca"),
+      u("Acadia University", "Wolfville, NS", "1001+", 42, ["Business", "Computer Science", "Education", "Sciences"], "CAD $20,000 – $28,000", ["September"], "https://www2.acadiau.ca"),
+      u("BCIT (British Columbia Institute of Technology)", "Burnaby, BC", "Specialized", 80, ["Engineering Technology", "Business", "Health Sciences", "IT"], "CAD $18,000 – $28,000", ["January", "April", "September"], "https://www.bcit.ca"),
+      u("George Brown College", "Toronto, ON", "Specialized", 155, ["Business", "Culinary Arts", "Design", "Community Services"], "CAD $16,000 – $22,000", ["September", "January"], "https://www.georgebrown.ca"),
+      u("Humber College", "Toronto, ON", "Specialized", 175, ["Business", "Social Work", "Engineering Tech", "Media Arts"], "CAD $16,000 – $22,000", ["September", "January"], "https://humber.ca"),
+      u("Seneca College", "Toronto, ON", "Specialized", 180, ["Business", "Engineering Tech", "Aviation", "IT"], "CAD $15,000 – $21,000", ["September", "January", "May"], "https://www.senecacollege.ca"),
+      u("Sheridan College", "Oakville, ON", "Specialized", 130, ["Animation", "Design", "Business", "Engineering Tech"], "CAD $16,000 – $22,000", ["September", "January"], "https://www.sheridancollege.ca"),
+      u("Algonquin College", "Ottawa, ON", "Specialized", 160, ["Business", "IT", "Health Sciences", "Engineering Tech"], "CAD $15,000 – $21,000", ["September", "January", "May"], "https://www.algonquincollege.com"),
+    ],
+  },
+
+  // ════════════════════════════════════ AUSTRALIA ════════════════════════════════════
+  {
+    key: "australia", numericCode: "36", name: "Australia", flag: "🇦🇺",
+    totalUniversities: 63, currency: "AUD", coordinates: [134, -25],
+    highlights: ["2–4 year Post-Study Work Visa", "Group of Eight world-class research unis", "Strong job market for tech & engineering grads"],
+    universities: [
+      u("University of Melbourne", "Melbourne, VIC", 33, 88, ["Medicine", "Law", "Engineering", "Commerce"], "AUD $40,000 – $52,000", ["February", "July"], "https://www.unimelb.edu.au"),
+      u("University of Sydney", "Sydney, NSW", 19, 82, ["Business", "Medicine", "Arts", "Engineering"], "AUD $38,000 – $50,000", ["February", "July"], "https://www.sydney.edu.au"),
+      u("Australian National University (ANU)", "Canberra, ACT", 34, 70, ["Policy & Governance", "Law", "Physics", "Asian Studies"], "AUD $38,000 – $50,000", ["February", "July"], "https://www.anu.edu.au"),
+      u("University of New South Wales (UNSW)", "Sydney, NSW", 19, 80, ["Engineering", "Law", "Business (UNSW Business)", "Medicine"], "AUD $38,000 – $50,000", ["February", "July", "September"], "https://www.unsw.edu.au"),
+      u("Monash University", "Melbourne, VIC", 37, 90, ["Pharmacy", "Engineering", "Business", "IT"], "AUD $37,000 – $48,000", ["February", "July"], "https://www.monash.edu"),
+      u("University of Queensland (UQ)", "Brisbane, QLD", 40, 76, ["Agriculture", "Business", "Medicine", "Engineering"], "AUD $36,000 – $48,000", ["February", "July"], "https://www.uq.edu.au"),
+      u("University of Adelaide", "Adelaide, SA", 89, 62, ["Engineering", "Wine Marketing", "Medicine", "Environmental Science"], "AUD $34,000 – $44,000", ["February", "July"], "https://www.adelaide.edu.au"),
+      u("University of Western Australia (UWA)", "Perth, WA", 97, 60, ["Mining Engineering", "Business", "Medicine", "Arts"], "AUD $34,000 – $44,000", ["February", "July"], "https://www.uwa.edu.au"),
+      u("University of Technology Sydney (UTS)", "Sydney, NSW", 133, 78, ["IT", "Engineering", "Business", "Design"], "AUD $36,000 – $46,000", ["February", "July"], "https://www.uts.edu.au"),
+      u("Macquarie University", "Sydney, NSW", 195, 72, ["Business", "Law", "Actuarial Studies", "IT"], "AUD $34,000 – $44,000", ["February", "July"], "https://www.mq.edu.au"),
+      u("Curtin University", "Perth, WA", 182, 70, ["Engineering", "Business", "Health Sciences", "IT"], "AUD $34,000 – $44,000", ["February", "July"], "https://www.curtin.edu.au"),
+      u("RMIT University", "Melbourne, VIC", 181, 80, ["Engineering", "Business", "Design", "IT"], "AUD $34,000 – $44,000", ["February", "July"], "https://www.rmit.edu.au"),
+      u("Deakin University", "Melbourne, VIC", "271–280", 75, ["Business", "Health Sciences", "Engineering", "Education"], "AUD $32,000 – $42,000", ["February", "July", "November"], "https://www.deakin.edu.au"),
+      u("University of Newcastle", "Newcastle, NSW", 197, 65, ["Engineering", "Medicine", "Business", "Sciences"], "AUD $30,000 – $42,000", ["February", "July"], "https://www.newcastle.edu.au"),
+      u("Swinburne University of Technology", "Melbourne, VIC", "401–450", 65, ["Engineering", "IT", "Business", "Design"], "AUD $30,000 – $42,000", ["February", "July", "November"], "https://www.swinburne.edu.au"),
+      u("Griffith University", "Brisbane, QLD", "301–350", 70, ["Business", "Law", "Music", "Engineering"], "AUD $28,000 – $40,000", ["February", "July"], "https://www.griffith.edu.au"),
+      u("La Trobe University", "Melbourne, VIC", "301–350", 68, ["Business", "Health Sciences", "Law", "Agriculture"], "AUD $28,000 – $38,000", ["February", "July"], "https://www.latrobe.edu.au"),
+      u("University of Wollongong (UOW)", "Wollongong, NSW", 218, 65, ["Engineering", "Business", "IT", "Education"], "AUD $28,000 – $38,000", ["February", "July"], "https://www.uow.edu.au"),
+      u("Flinders University", "Adelaide, SA", "401–450", 58, ["Medicine", "Social Work", "Engineering", "Business"], "AUD $28,000 – $38,000", ["February", "July"], "https://www.flinders.edu.au"),
+      u("Bond University", "Gold Coast, QLD", "401–450", 50, ["Business", "Law", "IT", "Health Sciences"], "AUD $32,000 – $44,000", ["January", "May", "September"], "https://www.bond.edu.au"),
+      u("James Cook University (JCU)", "Townsville/Cairns, QLD", "401–450", 55, ["Marine Biology", "Medicine", "Business", "Education"], "AUD $28,000 – $38,000", ["February", "July"], "https://www.jcu.edu.au"),
+      u("Western Sydney University (WSU)", "Parramatta, NSW", "401–450", 65, ["Engineering", "Business", "Health Sciences", "Law"], "AUD $26,000 – $36,000", ["February", "July"], "https://www.westernsydney.edu.au"),
+      u("Murdoch University", "Perth, WA", "601–650", 55, ["Business", "Psychology", "IT", "Engineering"], "AUD $26,000 – $36,000", ["February", "July"], "https://www.murdoch.edu.au"),
+      u("Edith Cowan University (ECU)", "Perth, WA", "651–700", 55, ["Business", "IT", "Education", "Health Sciences"], "AUD $24,000 – $34,000", ["February", "July"], "https://www.ecu.edu.au"),
+      u("Charles Darwin University (CDU)", "Darwin, NT", "801–1000", 45, ["Business", "IT", "Education", "Engineering"], "AUD $22,000 – $32,000", ["February", "July"], "https://www.cdu.edu.au"),
+      u("Victoria University (VU)", "Melbourne, VIC", "801–1000", 55, ["Business", "Engineering", "Sports Science", "Education"], "AUD $22,000 – $32,000", ["February", "July", "November"], "https://www.vu.edu.au"),
+      u("CQUniversity", "Rockhampton, QLD", "1001+", 50, ["Engineering", "Business", "Education", "Health Sciences"], "AUD $20,000 – $30,000", ["February", "July"], "https://www.cqu.edu.au"),
+      u("Charles Sturt University (CSU)", "Wagga Wagga, NSW", "801–1000", 55, ["Agriculture", "Business", "Nursing", "Education"], "AUD $20,000 – $30,000", ["February", "July"], "https://www.csu.edu.au"),
+      u("Federation University", "Ballarat, VIC", "1001+", 45, ["Business", "Engineering", "IT", "Nursing"], "AUD $18,000 – $28,000", ["February", "July"], "https://federation.edu.au"),
+      u("Southern Cross University (SCU)", "Lismore/Gold Coast, NSW", "1001+", 45, ["Business", "Tourism", "Law", "Health Sciences"], "AUD $20,000 – $30,000", ["February", "July", "October"], "https://www.scu.edu.au"),
+    ],
+  },
+
+  // ════════════════════════════════════ NEW ZEALAND ════════════════════════════════════
+  {
+    key: "new-zealand", numericCode: "554", name: "New Zealand", flag: "🇳🇿",
+    totalUniversities: 41, currency: "NZD", coordinates: [172, -41],
+    highlights: ["Open Work Visa up to 3 years post-study", "Safe, welcoming environment ranked top globally", "Research excellence in agriculture & environment"],
+    universities: [
+      u("University of Auckland", "Auckland", 65, 70, ["Engineering", "Business", "Medicine", "Law"], "NZD $35,000 – $48,000", ["February", "July"], "https://www.auckland.ac.nz"),
+      u("University of Otago", "Dunedin", 206, 62, ["Medicine", "Dentistry", "Pharmacy", "Surveying"], "NZD $32,000 – $42,000", ["February", "July"], "https://www.otago.ac.nz"),
+      u("Victoria University of Wellington", "Wellington", 244, 55, ["Law", "Architecture", "Commerce", "Policy"], "NZD $28,000 – $38,000", ["February", "July"], "https://www.wgtn.ac.nz"),
+      u("Massey University", "Auckland/Palmerston North", 351, 60, ["Design", "Aviation", "Agriculture", "Business"], "NZD $26,000 – $36,000", ["February", "July"], "https://www.massey.ac.nz"),
+      u("University of Canterbury", "Christchurch", 271, 52, ["Engineering", "Education", "Science", "Fine Arts"], "NZD $26,000 – $36,000", ["February", "July"], "https://www.canterbury.ac.nz"),
+      u("AUT University (Auckland University of Technology)", "Auckland", "451–500", 55, ["Business", "Health Sciences", "Engineering", "Hospitality"], "NZD $26,000 – $36,000", ["February", "July"], "https://www.aut.ac.nz"),
+      u("Lincoln University", "Christchurch", "651–700", 42, ["Agriculture", "Horticulture", "Commerce", "Environment"], "NZD $24,000 – $34,000", ["February", "July"], "https://www.lincoln.ac.nz"),
+      u("Waikato University", "Hamilton", "501–550", 48, ["Business (Waikato Management)", "Law", "Sciences", "Education"], "NZD $24,000 – $34,000", ["February", "July"], "https://www.waikato.ac.nz"),
+    ],
+  },
+
+  // ════════════════════════════════════ IRELAND ════════════════════════════════════
+  {
+    key: "ireland", numericCode: "372", name: "Ireland", flag: "🇮🇪",
+    totalUniversities: 22, currency: "EUR", coordinates: [-8, 53],
+    highlights: ["EU gateway — access to European job market", "2-year Stay Back visa for graduates", "Home to Google, Meta, Apple European HQs"],
+    universities: [
+      u("Trinity College Dublin (TCD)", "Dublin", 81, 68, ["Business", "Medicine", "Engineering", "Computer Science"], "€14,000 – €26,000", ["September"], "https://www.tcd.ie"),
+      u("University College Dublin (UCD)", "Dublin", 181, 75, ["Business (Smurfit)", "Engineering", "Agriculture", "Law"], "€15,000 – €24,000", ["September", "January"], "https://www.ucd.ie"),
+      u("University College Cork (UCC)", "Cork", 303, 58, ["Pharmacy", "Law", "Business", "Food Science"], "€12,000 – €22,000", ["September"], "https://www.ucc.ie"),
+      u("National University of Ireland Galway (NUIG)", "Galway", 261, 60, ["Medicine", "Engineering", "Law", "Business"], "€12,000 – €22,000", ["September"], "https://www.universityofgalway.ie"),
+      u("Dublin City University (DCU)", "Dublin", 471, 52, ["Communications", "Business", "Engineering", "Education"], "€11,000 – €18,000", ["September"], "https://www.dcu.ie"),
+      u("University of Limerick (UL)", "Limerick", 551, 55, ["Business", "Engineering", "Arts", "Education"], "€10,000 – €18,000", ["September"], "https://www.ul.ie"),
+      u("Maynooth University", "Maynooth", "651–700", 48, ["Business", "Law", "Arts", "Sciences"], "€9,000 – €16,000", ["September"], "https://www.maynoothuniversity.ie"),
+      u("Technological University Dublin (TUD)", "Dublin", "1001+", 55, ["Business", "Engineering", "Sciences", "IT"], "€9,000 – €15,000", ["September", "January"], "https://www.tudublin.ie"),
+      u("Griffith College Dublin", "Dublin", "Specialized", 40, ["Business", "Law", "Journalism", "Computing"], "€9,000 – €15,000", ["September", "January", "April"], "https://www.griffith.ie"),
+      u("Dublin Business School (DBS)", "Dublin", "Specialized", 35, ["Business", "Law", "Psychology", "Arts"], "€8,000 – €14,000", ["September", "January"], "https://www.dbs.ie"),
+    ],
+  },
+
+  // ════════════════════════════════════ UAE ════════════════════════════════════
+  {
+    key: "uae", numericCode: "784", name: "UAE", flag: "🇦🇪",
+    totalUniversities: 52, currency: "AED", coordinates: [54, 24],
+    highlights: ["Tax-free income — Dubai & Abu Dhabi", "English-medium across all institutions", "Global business hub for finance, logistics & tech"],
+    universities: [
+      u("New York University Abu Dhabi (NYUAD)", "Abu Dhabi", 38, 42, ["Liberal Arts", "Engineering", "Sciences", "Social Sciences"], "AED 85,000 – 120,000", ["August"], "https://nyuad.nyu.edu"),
+      u("Khalifa University", "Abu Dhabi", 166, 35, ["Engineering", "Sciences", "IT", "Aerospace"], "AED 60,000 – 90,000", ["September"], "https://www.ku.ac.ae"),
+      u("American University of Sharjah (AUS)", "Sharjah", "651–700", 48, ["Engineering", "Architecture", "Business", "Arts"], "AED 50,000 – 80,000", ["September", "January"], "https://www.aus.edu"),
+      u("University of Sharjah", "Sharjah", "801–1000", 55, ["Medicine", "Engineering", "Business", "Sciences"], "AED 45,000 – 70,000", ["September", "February"], "https://www.sharjah.ac.ae"),
+      u("American University of Dubai (AUD)", "Dubai", "Specialized", 35, ["Business", "Engineering", "Interior Design", "Communications"], "AED 50,000 – 75,000", ["September", "January"], "https://www.aud.edu"),
+      u("Heriot-Watt University Dubai", "Dubai", 354, 35, ["Engineering", "Business", "Architecture", "Computer Science"], "AED 48,000 – 72,000", ["September", "January"], "https://www.hw.ac.uk/dubai"),
+      u("University of Wollongong in Dubai (UOWD)", "Dubai", "801–1000", 30, ["Business", "Engineering", "Communication", "IT"], "AED 40,000 – 60,000", ["September", "January"], "https://www.uowdubai.ac.ae"),
+      u("Murdoch University Dubai", "Dubai", "601–650", 32, ["Business", "Psychology", "IT", "Engineering"], "AED 42,000 – 62,000", ["September", "January"], "https://www.murdoch.ac.ae"),
+      u("Middlesex University Dubai", "Dubai", "801–1000", 38, ["Business", "Engineering", "Media", "Arts"], "AED 40,000 – 60,000", ["September", "January"], "https://www.mdx.ac.ae"),
+      u("Paris-Sorbonne Abu Dhabi", "Abu Dhabi", 59, 28, ["Humanities", "Sciences", "Arts", "Languages"], "AED 50,000 – 75,000", ["September"], "https://www.sorbonne.ae"),
+      u("Manipal Academy UAE", "Dubai", "Specialized", 40, ["Medicine", "Engineering", "Business", "IT"], "AED 38,000 – 58,000", ["September", "January"], "https://manipaldubai.com"),
+      u("S P Jain School of Global Management", "Dubai", "Specialized", 10, ["MBA", "BBA", "Business Analytics", "Finance"], "AED 60,000 – 90,000", ["September", "January"], "https://www.spjain.org"),
+      u("BITS Pilani Dubai Campus", "Dubai", "Specialized", 15, ["Engineering", "Sciences", "IT", "Business"], "AED 52,000 – 75,000", ["September", "January"], "https://www.bits-pilani.ac.in/dubai"),
+      u("Curtin University Dubai", "Dubai", 182, 25, ["Engineering", "Business", "IT", "Accounting"], "AED 44,000 – 64,000", ["September", "February"], "https://curtin.ae"),
+      u("University of Birmingham Dubai", "Dubai", 84, 22, ["Business", "Engineering", "Computer Science", "Psychology"], "AED 58,000 – 78,000", ["September", "January"], "https://www.birmingham.ac.uk/dubai"),
+    ],
+  },
+
+  // ════════════════════════════════════ SINGAPORE ════════════════════════════════════
+  {
+    key: "singapore", numericCode: "702", name: "Singapore", flag: "🇸🇬",
+    totalUniversities: 23, currency: "SGD", coordinates: [104, 1.3],
+    highlights: ["Asia's education capital — QS top-ranked", "Work opportunities at Fortune 500 companies", "Safe, multicultural city-state"],
+    universities: [
+      u("National University of Singapore (NUS)", "Singapore", 8, 80, ["Computer Science", "Business", "Engineering", "Medicine"], "SGD $31,000 – $55,000", ["August"], "https://www.nus.edu.sg"),
+      u("Nanyang Technological University (NTU)", "Singapore", 26, 72, ["Engineering", "Business", "Communication", "Education"], "SGD $29,000 – $50,000", ["August"], "https://www.ntu.edu.sg"),
+      u("Singapore Management University (SMU)", "Singapore", 511, 42, ["Accountancy", "Law", "Business", "Information Systems"], "SGD $33,000 – $46,000", ["August", "January"], "https://www.smu.edu.sg"),
+      u("INSEAD (Asia Campus)", "Singapore", "Top 5 Global MBA", 8, ["MBA", "Executive MBA", "MIM", "Executive Education"], "SGD $95,000 – $108,000", ["January", "July"], "https://www.insead.edu/campuses/asia-campus"),
+      u("Singapore University of Technology & Design (SUTD)", "Singapore", "Specialized", 12, ["Architecture", "Engineering", "Design", "Computer Science"], "SGD $25,000 – $38,000", ["September"], "https://www.sutd.edu.sg"),
+      u("Singapore Institute of Technology (SIT)", "Singapore", "Specialized", 30, ["Engineering", "Health Sciences", "IT", "Business"], "SGD $22,000 – $35,000", ["August", "February"], "https://www.singaporetech.edu.sg"),
+    ],
+  },
+
+  // ════════════════════════════════════ CYPRUS ════════════════════════════════════
+  {
+    key: "cyprus", numericCode: "196", name: "Cyprus", flag: "🇨🇾",
+    totalUniversities: 6, currency: "EUR", coordinates: [33, 35],
+    highlights: ["Low cost of living in EU", "English-medium programs throughout", "Mediterranean lifestyle with EU residency rights"],
+    universities: [
+      u("University of Cyprus", "Nicosia", "601–650", 45, ["Business", "Engineering", "Medicine", "Law"], "€4,000 – €8,000", ["September"], "https://www.ucy.ac.cy"),
+      u("Cyprus University of Technology (CUT)", "Limassol", "801–1000", 35, ["Engineering", "Health Sciences", "Geotechnics", "Business"], "€5,000 – €9,000", ["September"], "https://www.cut.ac.cy"),
+      u("University of Nicosia (UNIC)", "Nicosia", "1001+", 50, ["Medicine", "MBA", "Law", "Education"], "€8,000 – €16,000", ["September", "January"], "https://www.unic.ac.cy"),
+      u("Frederick University", "Nicosia/Limassol", "1001+", 40, ["Engineering", "Business", "Arts", "IT"], "€5,000 – €9,000", ["September", "January"], "https://www.frederick.ac.cy"),
+      u("European University Cyprus", "Nicosia", "1001+", 38, ["Business", "Law", "Health Sciences", "Engineering"], "€6,000 – €10,000", ["September", "January"], "https://www.euc.ac.cy"),
+      u("Cyprus International University (CIU)", "Nicosia", "1001+", 35, ["Medicine", "Dentistry", "Business", "Engineering"], "€6,000 – €10,000", ["September", "January"], "https://www.ciu.edu.tr"),
+    ],
+  },
+
+  // ════════════════════════════════════ MAURITIUS ════════════════════════════════════
+  {
+    key: "mauritius", numericCode: "480", name: "Mauritius", flag: "🇲🇺",
+    totalUniversities: 2, currency: "MUR", coordinates: [57.5, -20],
+    highlights: ["English & French medium programs", "Affordable tuition & living", "Gateway to African and Indian Ocean markets"],
+    universities: [
+      u("University of Mauritius", "Réduit", "1001+", 40, ["Engineering", "Agriculture", "Law", "Management"], "MUR 30,000 – 90,000", ["August"], "https://www.uom.ac.mu"),
+      u("Middlesex University Mauritius", "Flic en Flac", "601–650", 28, ["Business", "IT", "Media", "Education"], "$6,000 – $10,000", ["September", "January"], "https://www.middlesex.ac.mu"),
+    ],
+  },
+
+  // ════════════════════════════════════ JAPAN ════════════════════════════════════
+  {
+    key: "japan", numericCode: "392", name: "Japan", flag: "🇯🇵",
+    totalUniversities: 4, currency: "JPY", coordinates: [138, 37],
+    highlights: ["World-class R&D in engineering & robotics", "Growing English-taught graduate programs", "MEXT Government Scholarship available"],
+    universities: [
+      u("University of Tokyo (UTokyo)", "Tokyo", 28, 60, ["Engineering", "Sciences", "Medicine", "Law"], "¥800,000 – 1,400,000", ["April", "October"], "https://www.u-tokyo.ac.jp/en"),
+      u("Kyoto University", "Kyoto", 46, 55, ["Engineering", "Medicine", "Sciences", "Agriculture"], "¥800,000 – 1,200,000", ["April", "October"], "https://www.kyoto-u.ac.jp/en"),
+      u("Osaka University", "Osaka", 80, 52, ["Engineering", "Medicine", "Dentistry", "Business"], "¥800,000 – 1,200,000", ["April", "October"], "https://www.osaka-u.ac.jp/en"),
+      u("Waseda University", "Tokyo", 208, 68, ["International Studies", "Business", "Engineering", "Humanities"], "¥1,200,000 – 1,800,000", ["April", "September"], "https://www.waseda.jp/top/en"),
+    ],
+  },
+
+  // ════════════════════════════════════ SOUTH KOREA ════════════════════════════════════
+  {
+    key: "south-korea", numericCode: "410", name: "South Korea", flag: "🇰🇷",
+    totalUniversities: 8, currency: "KRW", coordinates: [128, 37],
+    highlights: ["Global Tech & K-Culture hub", "Government Global Korea Scholarship (GKS)", "Affordable cost of living"],
+    universities: [
+      u("Seoul National University (SNU)", "Seoul", 31, 70, ["Engineering", "Business", "Law", "Medicine"], "₩5,000,000 – 9,000,000", ["March", "September"], "https://en.snu.ac.kr"),
+      u("KAIST", "Daejeon", 56, 48, ["Artificial Intelligence", "Engineering", "Sciences", "Business"], "₩6,000,000 – 10,000,000", ["March", "September"], "https://www.kaist.ac.kr/en"),
+      u("Yonsei University", "Seoul", 56, 62, ["Business", "International Studies", "Engineering", "Medicine"], "₩8,000,000 – 14,000,000", ["March", "September"], "https://www.yonsei.ac.kr/en_sc"),
+      u("Korea University", "Seoul", 79, 60, ["Law", "Business", "Engineering", "Political Science"], "₩8,000,000 – 14,000,000", ["March", "September"], "https://www.korea.edu/english/main"),
+      u("Sungkyunkwan University (SKKU)", "Seoul", 109, 58, ["Engineering", "Business", "Medicine", "Law"], "₩8,000,000 – 14,000,000", ["March", "September"], "https://www.skku.edu/eng"),
+      u("Hanyang University", "Seoul", 154, 55, ["Engineering", "Business", "Architecture", "Medicine"], "₩7,000,000 – 12,000,000", ["March", "September"], "https://www.hanyang.ac.kr/web/eng"),
+      u("Pohang University of Science & Technology (POSTECH)", "Pohang", 155, 30, ["Sciences", "Engineering", "IT", "Materials Science"], "₩6,000,000 – 10,000,000", ["March", "September"], "https://www.postech.ac.kr/eng"),
+      u("Sogang University", "Seoul", "401–450", 48, ["Business", "Engineering", "Communications", "Sciences"], "₩7,000,000 – 12,000,000", ["March", "September"], "https://www.sogang.ac.kr/english/index.do"),
+    ],
+  },
+
+  // ════════════════════════════════════ SAUDI ARABIA ════════════════════════════════════
+  {
+    key: "saudi-arabia", numericCode: "682", name: "Saudi Arabia", flag: "🇸🇦",
+    totalUniversities: 1, currency: "SAR", coordinates: [45, 24],
+    highlights: ["Vision 2030 scholarship opportunities", "Tax-free earnings", "World-class facilities"],
+    universities: [
+      u("King Abdullah University of Science & Technology (KAUST)", "Jeddah", 166, 18, ["Environmental Science", "Engineering", "Bioscience", "Computer Science"], "Fully Funded (scholarship)", ["August"], "https://www.kaust.edu.sa"),
+    ],
+  },
+
+  // ════════════════════════════════════ THAILAND ════════════════════════════════════
+  {
+    key: "thailand", numericCode: "764", name: "Thailand", flag: "🇹🇭",
+    totalUniversities: 1, currency: "THB", coordinates: [101, 15],
+    highlights: ["Low tuition & living costs", "ASEAN connectivity hub", "Growing English international programs"],
+    universities: [
+      u("Chulalongkorn University", "Bangkok", 216, 55, ["Business", "Engineering", "Medicine", "Fine Arts"], "฿120,000 – 300,000", ["August", "January"], "https://www.chula.ac.th/en"),
+    ],
+  },
+
+  // ════════════════════════════════════ MALAYSIA ════════════════════════════════════
+  {
+    key: "malaysia", numericCode: "458", name: "Malaysia", flag: "🇲🇾",
+    totalUniversities: 16, currency: "MYR", coordinates: [110, 4],
+    highlights: ["Affordable English-medium programs", "Branch campuses of UK & Australian unis", "Multicultural, modern environment"],
+    universities: [
+      u("University of Malaya (UM)", "Kuala Lumpur", 65, 68, ["Medicine", "Engineering", "Law", "Business"], "MYR 15,000 – 35,000", ["July", "January"], "https://www.um.edu.my"),
+      u("Universiti Putra Malaysia (UPM)", "Serdang", 133, 62, ["Agriculture", "Engineering", "Medicine", "Business"], "MYR 14,000 – 28,000", ["July", "January"], "https://www.upm.edu.my"),
+      u("Universiti Teknologi Malaysia (UTM)", "Johor Bahru", 181, 58, ["Engineering", "Computer Science", "Architecture", "Sciences"], "MYR 14,000 – 28,000", ["July", "January"], "https://www.utm.my"),
+      u("Universiti Kebangsaan Malaysia (UKM)", "Bangi", 211, 60, ["Medicine", "Engineering", "Sciences", "Economics"], "MYR 14,000 – 26,000", ["July", "January"], "https://www.ukm.my/main/en"),
+      u("Monash University Malaysia", "Subang Jaya", 37, 45, ["Engineering", "Business", "IT", "Medicine"], "MYR 38,000 – 55,000", ["February", "July"], "https://www.monash.edu.my"),
+      u("University of Nottingham Malaysia", "Semenyih", 103, 40, ["Engineering", "Business", "Law", "Pharmacy"], "MYR 35,000 – 50,000", ["September", "January"], "https://www.nottingham.edu.my"),
+      u("Taylor's University", "Subang Jaya", "Specialized", 55, ["Business", "Architecture", "Medicine", "Hospitality"], "MYR 30,000 – 45,000", ["April", "August", "January"], "https://www.taylors.edu.my"),
+      u("Sunway University", "Bandar Sunway", "Specialized", 48, ["Business", "Engineering", "Medicine", "IT"], "MYR 28,000 – 42,000", ["January", "April", "August"], "https://www.sunway.edu.my"),
+    ],
+  },
+
+  // ════════════════════════════════════ CHINA ════════════════════════════════════
+  {
+    key: "china", numericCode: "156", name: "China", flag: "🇨🇳",
+    totalUniversities: 2, currency: "CNY", coordinates: [105, 35],
+    highlights: ["Chinese Government Scholarship (CSC)", "World's fastest-growing economy", "English-medium graduate programs growing rapidly"],
+    universities: [
+      u("Peking University", "Beijing", 17, 70, ["Economics", "Law", "Medicine", "Humanities"], "¥26,000 – 60,000", ["September"], "https://english.pku.edu.cn"),
+      u("Tsinghua University", "Beijing", 20, 68, ["Engineering", "Architecture", "Economics", "Sciences"], "¥26,000 – 60,000", ["September"], "https://www.tsinghua.edu.cn/en"),
+    ],
+  },
+
+  // ════════════════════════════════════ VIETNAM ════════════════════════════════════
+  {
+    key: "vietnam", numericCode: "704", name: "Vietnam", flag: "🇻🇳",
+    totalUniversities: 3, currency: "VND", coordinates: [108, 16],
+    highlights: ["Very low living costs", "Fast-growing economy for career starters", "RMIT & international branch campuses"],
+    universities: [
+      u("Vietnam National University – HCM City", "Ho Chi Minh City", "801–1000", 48, ["Engineering", "IT", "Economics", "Sciences"], "VND 20M – 50M", ["September"], "https://vnuhcm.edu.vn/en"),
+      u("Vietnam National University – Hanoi", "Hanoi", "801–1000", 45, ["Economics", "Education", "Sciences", "Engineering"], "VND 18M – 48M", ["September"], "https://vnu.edu.vn/eng"),
+      u("RMIT University Vietnam", "HCMC / Hanoi", 125, 28, ["Business", "Design", "IT", "Communication"], "$8,000 – $12,000", ["February", "July"], "https://www.rmit.edu.vn"),
+    ],
+  },
+
+  // ════════════════════════════════════ INDONESIA ════════════════════════════════════
+  {
+    key: "indonesia", numericCode: "360", name: "Indonesia", flag: "🇮🇩",
+    totalUniversities: 1, currency: "IDR", coordinates: [120, -5],
+    highlights: ["ASEAN's largest economy", "Growing English programs", "Government scholarship opportunities"],
+    universities: [
+      u("University of Indonesia (UI)", "Depok", 206, 55, ["Medicine", "Law", "Engineering", "Economics"], "IDR 6M – 20M", ["August", "February"], "https://www.ui.ac.id/en"),
+    ],
+  },
+
+  // ════════════════════════════════════ SRI LANKA ════════════════════════════════════
+  {
+    key: "sri-lanka", numericCode: "144", name: "Sri Lanka", flag: "🇱🇰",
+    totalUniversities: 3, currency: "LKR", coordinates: [81, 8],
+    highlights: ["Affordable fees for South Asian students", "Strong medical & engineering programs", "English-medium options available"],
+    universities: [
+      u("University of Colombo", "Colombo", "1001+", 42, ["Medicine", "Law", "Arts", "Science"], "LKR 80,000 – 200,000", ["October"], "https://www.cmb.ac.lk"),
+      u("University of Peradeniya", "Kandy", "1001+", 40, ["Agriculture", "Engineering", "Medicine", "Science"], "LKR 60,000 – 150,000", ["October"], "https://www.pdn.ac.lk"),
+      u("University of Moratuwa", "Moratuwa", "1001+", 35, ["Engineering", "Architecture", "IT", "Design"], "LKR 70,000 – 180,000", ["October"], "https://www.mrt.ac.lk"),
+    ],
+  },
+
+  // ════════════════════════════════════ KAZAKHSTAN ════════════════════════════════════
+  {
+    key: "kazakhstan", numericCode: "398", name: "Kazakhstan", flag: "🇰🇿",
+    totalUniversities: 1, currency: "KZT", coordinates: [68, 48],
+    highlights: ["Emerging Central Asian education hub", "Bolashak scholarship available", "Trilingual (KZ/RU/EN) education"],
+    universities: [
+      u("Nazarbayev University", "Nur-Sultan", "501–510", 32, ["Engineering", "Science", "Medicine", "Economics"], "$2,000 – $8,000", ["September", "January"], "https://nu.edu.kz/en"),
+    ],
+  },
+
+  // ════════════════════════════════════ GERMANY ════════════════════════════════════
+  {
+    key: "germany", numericCode: "276", name: "Germany", flag: "🇩🇪",
+    totalUniversities: 30, currency: "EUR", coordinates: [10, 51],
+    highlights: ["Tuition-free at public universities", "18-month Job Seeker Visa post-graduation", "World leader in engineering & research"],
+    universities: [
+      u("Technical University of Munich (TUM)", "Munich", 37, 68, ["Engineering", "Computer Science", "Business", "Natural Sciences"], "€500 – €3,000 (semester fee)", ["October", "April"], "https://www.tum.de/en"),
+      u("Ludwig Maximilian University Munich (LMU)", "Munich", 54, 72, ["Medicine", "Law", "Economics", "Humanities"], "€500 – €3,000 (semester fee)", ["October", "April"], "https://www.lmu.de/en"),
+      u("Heidelberg University", "Heidelberg", 87, 62, ["Medicine", "Natural Sciences", "Law", "Economics"], "€500 – €3,000 (semester fee)", ["October", "April"], "https://www.uni-heidelberg.de/en"),
+      u("Humboldt University of Berlin (HU Berlin)", "Berlin", 120, 60, ["Humanities", "Law", "Medicine", "Sciences"], "€500 – €3,000 (semester fee)", ["October", "April"], "https://www.hu-berlin.de/en"),
+      u("Free University of Berlin (FU Berlin)", "Berlin", 98, 58, ["Political Science", "History", "Biology", "Law"], "€500 – €3,000 (semester fee)", ["October", "April"], "https://www.fu-berlin.de/en"),
+      u("RWTH Aachen University", "Aachen", 106, 55, ["Engineering", "Computer Science", "Business Engineering", "Sciences"], "€500 – €3,000 (semester fee)", ["October", "April"], "https://www.rwth-aachen.de/cms/root/The-RWTH/~aat/Profile/?lidx=1"),
+      u("University of Göttingen", "Göttingen", 201, 52, ["Sciences", "Medicine", "Humanities", "Law"], "€500 – €3,000 (semester fee)", ["October", "April"], "https://www.uni-goettingen.de/en"),
+      u("University of Hamburg", "Hamburg", 201, 55, ["Business", "Law", "Sciences", "Medicine"], "€500 – €3,000 (semester fee)", ["October", "April"], "https://www.uni-hamburg.de/en"),
+      u("University of Cologne (Uni Köln)", "Cologne", "201–250", 58, ["Business", "Law", "Medicine", "Economics"], "€500 – €3,000 (semester fee)", ["October", "April"], "https://www.uni-koeln.de/en"),
+      u("University of Frankfurt (Goethe University)", "Frankfurt", "201–250", 55, ["Finance (House of Finance)", "Law", "Medicine", "Sciences"], "€500 – €3,000 (semester fee)", ["October", "April"], "https://www.goethe-university-frankfurt.de/en"),
+      u("University of Bonn", "Bonn", 201, 50, ["Sciences", "Agriculture", "Law", "Mathematics"], "€500 – €3,000 (semester fee)", ["October", "April"], "https://www.uni-bonn.de/en"),
+      u("TU Berlin", "Berlin", 154, 52, ["Engineering", "Computer Science", "Architecture", "Economics"], "€500 – €3,000 (semester fee)", ["October", "April"], "https://www.tu.berlin/en"),
+      u("University of Freiburg", "Freiburg", 201, 50, ["Medicine", "Sciences", "Humanities", "Engineering"], "€500 – €3,000 (semester fee)", ["October", "April"], "https://www.uni-freiburg.de/en"),
+      u("University of Tübingen", "Tübingen", 201, 50, ["Medicine", "Sciences", "Humanities", "Law"], "€500 – €3,000 (semester fee)", ["October", "April"], "https://www.uni-tuebingen.de/en"),
+      u("University of Stuttgart", "Stuttgart", 201, 48, ["Engineering", "Architecture", "Computer Science", "Management"], "€500 – €3,000 (semester fee)", ["October", "April"], "https://www.uni-stuttgart.de/en"),
+      u("University of Erlangen-Nuremberg (FAU)", "Erlangen", 201, 52, ["Engineering", "Medicine", "Sciences", "Business"], "€500 – €3,000 (semester fee)", ["October", "April"], "https://www.fau.eu"),
+      u("University of Mannheim", "Mannheim", "401–450", 30, ["Business", "Economics", "Law", "Social Sciences"], "€500 – €3,000 (semester fee)", ["September", "March"], "https://www.uni-mannheim.de/en"),
+      u("University of Mainz (JGU)", "Mainz", "401–450", 50, ["Medicine", "Sciences", "Humanities", "Law"], "€500 – €3,000 (semester fee)", ["October", "April"], "https://www.uni-mainz.de/eng"),
+      u("University of Münster", "Münster", 201, 52, ["Law", "Medicine", "Sciences", "Business"], "€500 – €3,000 (semester fee)", ["October", "April"], "https://www.uni-muenster.de/en"),
+      u("WHU – Otto Beisheim School of Management", "Vallendar", "Specialized", 12, ["MBA", "Master in Finance", "MSc Management", "EMBA"], "€15,000 – €50,000", ["September"], "https://www.whu.edu/en"),
+    ],
+  },
+
+  // ════════════════════════════════════ LUXEMBOURG ════════════════════════════════════
+  {
+    key: "luxembourg", numericCode: "442", name: "Luxembourg", flag: "🇱🇺",
+    totalUniversities: 1, currency: "EUR", coordinates: [6.1, 49.8],
+    highlights: ["EU financial capital & HQ hub", "Trilingual (EN/FR/DE) environment", "High earning potential post-graduation"],
+    universities: [
+      u("University of Luxembourg", "Luxembourg City", "601–650", 38, ["Finance", "Law", "Computer Science", "Education"], "€400 – €800/semester", ["September"], "https://wwwen.uni.lu"),
+    ],
+  },
+
+  // ════════════════════════════════════ NETHERLANDS ════════════════════════════════════
+  {
+    key: "netherlands", numericCode: "528", name: "Netherlands", flag: "🇳🇱",
+    totalUniversities: 8, currency: "EUR", coordinates: [5.3, 52.1],
+    highlights: ["English-medium bachelor's & master's widely available", "Orientation Year Visa (12 months)", "Strong research university tradition"],
+    universities: [
+      u("Delft University of Technology (TU Delft)", "Delft", 47, 58, ["Engineering", "Architecture", "Computer Science", "Aerospace"], "€10,000 – €20,000", ["September"], "https://www.tudelft.nl/en"),
+      u("University of Amsterdam (UvA)", "Amsterdam", 53, 68, ["Business", "Social Sciences", "Law", "Economics"], "€12,000 – €20,000", ["September", "February"], "https://www.uva.nl/en"),
+      u("Erasmus University Rotterdam", "Rotterdam", 175, 62, ["Business (RSM)", "Economics", "Law", "Social Sciences"], "€10,000 – €20,000", ["September", "February"], "https://www.eur.nl/en"),
+      u("Leiden University", "Leiden", 128, 55, ["Law", "International Relations", "Biology", "Archaeology"], "€10,000 – £18,000", ["September", "February"], "https://www.universiteitleiden.nl/en"),
+      u("Utrecht University", "Utrecht", 67, 65, ["Sciences", "Law", "Economics", "Humanities"], "€10,000 – €20,000", ["September"], "https://www.uu.nl/en"),
+      u("Wageningen University & Research (WUR)", "Wageningen", 150, 45, ["Life Sciences", "Food Technology", "Agriculture", "Environmental Sciences"], "€10,000 – €18,000", ["September", "February"], "https://www.wur.nl/en"),
+      u("VU Amsterdam (Vrije Universiteit)", "Amsterdam", 209, 58, ["Business", "Law", "Humanities", "Dentistry"], "€11,000 – €20,000", ["September"], "https://www.vu.nl/en"),
+      u("Eindhoven University of Technology (TU/e)", "Eindhoven", 129, 42, ["Engineering", "Industrial Design", "Applied Mathematics", "Computer Science"], "€10,000 – €18,000", ["September"], "https://www.tue.nl/en"),
+    ],
+  },
+
+  // ════════════════════════════════════ AUSTRIA ════════════════════════════════════
+  {
+    key: "austria", numericCode: "40", name: "Austria", flag: "🇦🇹",
+    totalUniversities: 4, currency: "EUR", coordinates: [14.5, 47.5],
+    highlights: ["Very low tuition at public universities", "Red-White-Red Card for post-study work", "Central European cultural & business hub"],
+    universities: [
+      u("University of Vienna", "Vienna", 132, 62, ["Law", "Economics", "Humanities", "Sciences"], "€1,500 – €14,000/year", ["October", "March"], "https://www.univie.ac.at/en"),
+      u("Vienna University of Technology (TU Wien)", "Vienna", 201, 45, ["Engineering", "Architecture", "Computer Science", "Mathematics"], "€1,500 – €14,000/year", ["October", "March"], "https://www.tuwien.at/en"),
+      u("WU Vienna (Vienna Univ. of Economics & Business)", "Vienna", 401, 35, ["Business", "Economics", "Law", "Social Sciences"], "€1,500 – €14,000/year", ["October", "March"], "https://www.wu.ac.at/en"),
+      u("University of Graz", "Graz", "401–450", 48, ["Sciences", "Law", "Social Sciences", "Humanities"], "€1,500 – €14,000/year", ["October", "March"], "https://www.uni-graz.at/en"),
+    ],
+  },
+
+  // ════════════════════════════════════ CROATIA ════════════════════════════════════
+  {
+    key: "croatia", numericCode: "191", name: "Croatia", flag: "🇭🇷",
+    totalUniversities: 1, currency: "EUR", coordinates: [15.5, 45.1],
+    highlights: ["EU member — gateway to Europe", "Affordable fees & cost of living", "English-medium medical programs"],
+    universities: [
+      u("University of Zagreb", "Zagreb", "801–1000", 52, ["Medicine", "Engineering", "Law", "Economics"], "€2,000 – €10,000", ["October"], "https://www.unizg.hr/homepage"),
+    ],
+  },
+
+  // ════════════════════════════════════ DENMARK ════════════════════════════════════
+  {
+    key: "denmark", numericCode: "208", name: "Denmark", flag: "🇩🇰",
+    totalUniversities: 3, currency: "DKK", coordinates: [10, 56],
+    highlights: ["Top-ranked quality of life & sustainability", "Work permit after graduation", "Strong engineering & design tradition"],
+    universities: [
+      u("University of Copenhagen (UCPH)", "Copenhagen", 97, 65, ["Medicine", "Science", "Law", "Social Sciences"], "DKK 50,000 – 120,000", ["September"], "https://www.ku.dk/english"),
+      u("Technical University of Denmark (DTU)", "Lyngby", 173, 48, ["Engineering", "Life Science", "IT", "Physics"], "DKK 60,000 – 100,000", ["September"], "https://www.dtu.dk/english"),
+      u("Aarhus University", "Aarhus", 150, 62, ["Business (Aarhus BSS)", "Engineering", "Sciences", "Humanities"], "DKK 50,000 – 100,000", ["September"], "https://www.au.dk/en"),
+    ],
+  },
+
+  // ════════════════════════════════════ HUNGARY ════════════════════════════════════
+  {
+    key: "hungary", numericCode: "348", name: "Hungary", flag: "🇭🇺",
+    totalUniversities: 8, currency: "HUF", coordinates: [19, 47],
+    highlights: ["Stipendium Hungaricum scholarship", "Affordable medical & dental degrees in English", "EU degree recognition"],
+    universities: [
+      u("Semmelweis University", "Budapest", "751–800", 22, ["Medicine", "Dentistry", "Pharmacy", "Health Sciences"], "€13,000 – €16,000", ["September"], "https://semmelweis.hu/en"),
+      u("University of Debrecen", "Debrecen", "801–1000", 52, ["Medicine", "Dentistry", "Pharmacy", "Engineering"], "€6,000 – €14,000", ["September"], "https://unideb.hu/en"),
+      u("University of Pécs", "Pécs", "801–1000", 48, ["Medicine", "Dentistry", "Law", "Business"], "€6,000 – €14,000", ["September"], "https://english.pte.hu"),
+      u("Budapest University of Technology & Economics (BME)", "Budapest", "601–650", 42, ["Engineering", "Computer Science", "Architecture", "Sciences"], "€4,000 – €9,000", ["September", "February"], "https://www.bme.hu/?language=en"),
+      u("Eötvös Loránd University (ELTE)", "Budapest", "451–500", 55, ["Sciences", "Law", "Humanities", "IT"], "€4,000 – €9,000", ["September", "February"], "https://www.elte.hu/en"),
+      u("University of Miskolc", "Miskolc", "1001+", 38, ["Engineering", "Business", "Law", "Sciences"], "€3,500 – €8,000", ["September", "February"], "https://www.uni-miskolc.hu/en"),
+      u("Budapest Metropolitan University (METU)", "Budapest", "1001+", 38, ["Business", "Tourism", "Arts", "Communication"], "€4,000 – €8,000", ["September", "February"], "https://www.metropolitan.hu/en"),
+      u("Pázmány Péter Catholic University", "Budapest", "801–1000", 35, ["Law", "Information Technology", "Humanities", "Sciences"], "€4,000 – €9,000", ["September", "February"], "https://ppke.hu/en"),
+    ],
+  },
+
+  // ════════════════════════════════════ LITHUANIA ════════════════════════════════════
+  {
+    key: "lithuania", numericCode: "440", name: "Lithuania", flag: "🇱🇹",
+    totalUniversities: 3, currency: "EUR", coordinates: [24, 56],
+    highlights: ["Affordable EU education", "Growing startup tech scene in Vilnius", "EU rights post-graduation"],
+    universities: [
+      u("Vilnius University (VU)", "Vilnius", "601–650", 48, ["Law", "Economics", "Medicine", "Mathematics"], "€2,500 – €8,000", ["September"], "https://www.vu.lt/en"),
+      u("Kaunas University of Technology (KTU)", "Kaunas", "801–1000", 42, ["Engineering", "IT", "Business", "Architecture"], "€2,000 – €6,000", ["September", "February"], "https://en.ktu.edu"),
+      u("Vytautas Magnus University (VMU)", "Kaunas", "1001+", 38, ["Social Sciences", "Arts", "Humanities", "Business"], "€2,000 – €5,000", ["September"], "https://www.vdu.lt/en"),
+    ],
+  },
+
+  // ════════════════════════════════════ POLAND ════════════════════════════════════
+  {
+    key: "poland", numericCode: "616", name: "Poland", flag: "🇵🇱",
+    totalUniversities: 3, currency: "PLN", coordinates: [20, 52],
+    highlights: ["Fast-growing EU economy", "Affordable medical & dental education in English", "Strong engineering tradition"],
+    universities: [
+      u("University of Warsaw", "Warsaw", "401–450", 60, ["Law", "Economics", "Sciences", "Humanities"], "€2,000 – €8,000", ["October", "February"], "https://en.uw.edu.pl"),
+      u("Jagiellonian University", "Kraków", "441–450", 58, ["Law", "Medicine", "Sciences", "Humanities"], "€2,000 – €12,000", ["October"], "https://en.uj.edu.pl"),
+      u("Warsaw University of Technology (PW)", "Warsaw", "601–650", 45, ["Engineering", "Computer Science", "Architecture", "Physics"], "€2,000 – €6,000", ["October", "February"], "https://www.pw.edu.pl/engpw"),
+    ],
+  },
+
+  // ════════════════════════════════════ BELGIUM ════════════════════════════════════
+  {
+    key: "belgium", numericCode: "56", name: "Belgium", flag: "🇧🇪",
+    totalUniversities: 3, currency: "EUR", coordinates: [4.5, 50.5],
+    highlights: ["Home to EU & NATO HQs — top career hub", "High-quality research universities", "Multilingual (EN/FR/NL) environment"],
+    universities: [
+      u("KU Leuven", "Leuven", 80, 70, ["Engineering", "Medicine", "Business", "Theology"], "€900 – €8,000", ["September"], "https://www.kuleuven.be/english"),
+      u("Ghent University (UGent)", "Ghent", 171, 62, ["Bioscience", "Engineering", "Economics", "Law"], "€900 – €8,000", ["September"], "https://www.ugent.be/en"),
+      u("Université libre de Bruxelles (ULB)", "Brussels", 235, 55, ["Sciences", "Law", "Medicine", "Philosophy"], "€900 – €8,000", ["September"], "https://www.ulb.be/en"),
+    ],
+  },
+
+  // ════════════════════════════════════ RUSSIA ════════════════════════════════════
+  {
+    key: "russia", numericCode: "643", name: "Russia", flag: "🇷🇺",
+    totalUniversities: 2, currency: "RUB", coordinates: [105, 61],
+    highlights: ["Russian Government scholarships available", "Strong STEM & medical traditions", "Affordable living costs"],
+    universities: [
+      u("Lomonosov Moscow State University (MSU)", "Moscow", 87, 65, ["Sciences", "Mathematics", "Journalism", "Law"], "$5,000 – $10,000", ["September"], "https://www.msu.ru/en"),
+      u("Saint Petersburg State University (SPbSU)", "Saint Petersburg", 316, 58, ["Economics", "Law", "Sciences", "Arts"], "$4,000 – $9,000", ["September"], "https://english.spbu.ru"),
+    ],
+  },
+
+  // ════════════════════════════════════ MONACO ════════════════════════════════════
+  {
+    key: "monaco", numericCode: "492", name: "Monaco", flag: "🇲🇨",
+    totalUniversities: 1, currency: "EUR", coordinates: [7.4, 43.7],
+    highlights: ["Global finance & luxury business hub", "Unique access to UHNWI networks", "French Riviera lifestyle"],
+    universities: [
+      u("International University of Monaco (IUM)", "Monaco", "Specialised", 12, ["MBA", "Finance", "Luxury Management", "Marketing"], "€20,000 – €30,000", ["September", "January"], "https://www.monaco.edu"),
+    ],
+  },
+
+  // ════════════════════════════════════ GEORGIA ════════════════════════════════════
+  {
+    key: "georgia", numericCode: "268", name: "Georgia", flag: "🇬🇪",
+    totalUniversities: 6, currency: "GEL", coordinates: [43, 42],
+    highlights: ["Affordable medical & dental programs in English", "Thriving startup scene in Tbilisi", "Visa-free for many nationalities"],
+    universities: [
+      u("Tbilisi State Medical University (TSMU)", "Tbilisi", "1001+", 12, ["Medicine", "Dentistry", "Pharmacy", "Public Health"], "$5,000 – $8,000", ["September"], "https://tsmu.edu/en"),
+      u("Tbilisi State University (TSU)", "Tbilisi", "1001+", 45, ["Law", "Economics", "Sciences", "Humanities"], "GEL 2,500 – 6,500", ["September"], "https://www.tsu.ge/en"),
+      u("Ilia State University", "Tbilisi", "1001+", 35, ["Business", "Law", "Sciences", "Engineering"], "GEL 2,500 – 6,500", ["September"], "https://iliauni.edu.ge/en"),
+      u("Georgian Technical University (GTU)", "Tbilisi", "1001+", 40, ["Engineering", "IT", "Architecture", "Business"], "GEL 2,000 – 5,000", ["September"], "https://gtu.ge/Eng"),
+      u("Caucasus University", "Tbilisi", "1001+", 28, ["Business", "Law", "Media", "IT"], "$4,000 – $7,000", ["September"], "https://cu.edu.ge/en"),
+      u("Free University of Tbilisi", "Tbilisi", "1001+", 25, ["Business", "Law", "Technology", "Natural Sciences"], "$4,000 – $7,000", ["September"], "https://freeuni.edu.ge/en"),
+    ],
+  },
+
+  // ════════════════════════════════════ FINLAND ════════════════════════════════════
+  {
+    key: "finland", numericCode: "246", name: "Finland", flag: "🇫🇮",
+    totalUniversities: 16, currency: "EUR", coordinates: [26, 65],
+    highlights: ["World-renowned education system", "Growing English-medium programs", "High quality of life & innovation hub"],
+    universities: [
+      u("University of Helsinki", "Helsinki", 105, 65, ["Law", "Medicine", "Sciences", "Humanities"], "€8,000 – €18,000", ["August", "January"], "https://www.helsinki.fi/en"),
+      u("Aalto University", "Espoo", 109, 55, ["Business", "Engineering", "Design", "Arts"], "€10,000 – €15,000", ["September", "January"], "https://www.aalto.fi/en"),
+      u("University of Turku (UTU)", "Turku", "401–450", 48, ["Medicine", "Business", "Sciences", "Education"], "€8,000 – €15,000", ["August", "January"], "https://www.utu.fi/en"),
+      u("Tampere University", "Tampere", "301–350", 45, ["Engineering", "Medicine", "IT", "Social Sciences"], "€8,000 – £15,000", ["August", "January"], "https://www.tuni.fi/en"),
+      u("University of Oulu", "Oulu", "401–450", 42, ["Engineering", "Medicine", "IT", "Sciences"], "€8,000 – €14,000", ["August", "January"], "https://www.oulu.fi/en"),
+      u("Lappeenranta-Lahti University of Technology (LUT)", "Lappeenranta", "401–450", 38, ["Engineering", "Business", "IT", "Sciences"], "€8,000 – €14,000", ["September"], "https://www.lut.fi/en"),
+      u("University of Jyväskylä (JYU)", "Jyväskylä", "401–450", 40, ["Education", "Business", "Sports Sciences", "IT"], "€8,000 – €14,000", ["August"], "https://www.jyu.fi/en"),
+      u("Hanken School of Economics", "Helsinki", "Specialized", 18, ["Business", "Economics", "Finance", "Marketing"], "€10,000 – €16,000", ["September"], "https://www.hanken.fi/en"),
+    ],
+  },
+
+  // ════════════════════════════════════ GREECE ════════════════════════════════════
+  {
+    key: "greece", numericCode: "300", name: "Greece", flag: "🇬🇷",
+    totalUniversities: 2, currency: "EUR", coordinates: [22, 39],
+    highlights: ["EU member — European degree recognition", "Affordable living in rich cultural setting", "English-medium private programs"],
+    universities: [
+      u("National & Kapodistrian University of Athens (NKUA)", "Athens", "601–650", 55, ["Law", "Medicine", "Sciences", "Economics"], "€1,500 – €12,000", ["September"], "https://en.uoa.gr"),
+      u("Aristotle University of Thessaloniki (AUTH)", "Thessaloniki", "501–550", 58, ["Medicine", "Engineering", "Law", "Agriculture"], "€1,500 – €12,000", ["September"], "https://www.auth.gr/en"),
+    ],
+  },
+
+  // ════════════════════════════════════ SPAIN ════════════════════════════════════
+  {
+    key: "spain", numericCode: "724", name: "Spain", flag: "🇪🇸",
+    totalUniversities: 21, currency: "EUR", coordinates: [-4, 40],
+    highlights: ["4th largest EU economy — strong career prospects", "Spanish + English bilingual opportunities", "1-year Job Seeker Visa post-graduation"],
+    universities: [
+      u("IE University", "Madrid / Segovia", "Top Business School", 30, ["MBA", "Law", "Design", "Architecture"], "€25,000 – €45,000", ["September", "January"], "https://www.ie.edu"),
+      u("ESADE Business School", "Barcelona", "Top 20 MBA globally", 18, ["MBA", "Law", "Executive Education", "Data Science"], "€30,000 – €55,000", ["September", "January"], "https://www.esade.edu/en"),
+      u("IESE Business School (University of Navarra)", "Barcelona", "Top 10 MBA globally", 15, ["MBA", "Executive MBA", "Finance", "Management"], "€60,000 – €90,000", ["September"], "https://www.iese.edu"),
+      u("University of Barcelona (UB)", "Barcelona", 165, 68, ["Medicine", "Law", "Economics", "Sciences"], "€4,000 – £15,000", ["September", "February"], "https://www.ub.edu/web/ub/en"),
+      u("Autonomous University of Madrid (UAM)", "Madrid", 222, 62, ["Sciences", "Law", "Economics", "Humanities"], "€4,000 – €14,000", ["September"], "https://www.uam.es/uam/en/universidad-autonoma-madrid"),
+      u("Autonomous University of Barcelona (UAB)", "Barcelona", 188, 60, ["Sciences", "Medicine", "Economics", "Humanities"], "€4,000 – €14,000", ["September"], "https://www.uab.cat/en"),
+      u("Complutense University of Madrid (UCM)", "Madrid", 251, 65, ["Law", "Medicine", "Sciences", "Humanities"], "€4,000 – €14,000", ["September"], "https://www.ucm.es/english"),
+      u("University of Navarra", "Pamplona", "301–350", 55, ["Medicine", "Law", "Business", "Sciences"], "€12,000 – €25,000", ["September"], "https://www.unav.edu/en/home"),
+      u("University of Granada (UGR)", "Granada", 351, 58, ["Business", "Medicine", "Law", "Sciences"], "€3,000 – €12,000", ["September", "February"], "https://www.ugr.es/en"),
+      u("University of Salamanca (USAL)", "Salamanca", "501–550", 52, ["Law", "Economics", "Arts", "Sciences"], "€3,000 – €10,000", ["September"], "https://www.usal.es/en"),
+    ],
+  },
+
+  // ════════════════════════════════════ SWEDEN ════════════════════════════════════
+  {
+    key: "sweden", numericCode: "752", name: "Sweden", flag: "🇸🇪",
+    totalUniversities: 9, currency: "SEK", coordinates: [18, 62],
+    highlights: ["Top-ranked sustainability & innovation hub", "High quality of life & work–life balance", "Work permit available post-graduation"],
+    universities: [
+      u("KTH Royal Institute of Technology", "Stockholm", 65, 55, ["Engineering", "Computer Science", "Architecture", "Environmental Science"], "SEK 100,000 – 250,000", ["August", "January"], "https://www.kth.se/en"),
+      u("Lund University", "Lund", 85, 68, ["Engineering", "Medicine", "Law", "Social Sciences"], "SEK 100,000 – 250,000", ["August", "January"], "https://www.lu.se/en"),
+      u("Uppsala University", "Uppsala", 108, 60, ["Medicine", "Law", "Sciences", "Engineering"], "SEK 100,000 – 220,000", ["August", "January"], "https://www.uu.se/en"),
+      u("Stockholm University (SU)", "Stockholm", 163, 62, ["Economics", "Law", "Sciences", "Humanities"], "SEK 80,000 – 200,000", ["August", "January"], "https://www.su.se/english"),
+      u("Chalmers University of Technology", "Gothenburg", 201, 45, ["Engineering", "Architecture", "IT", "Sciences"], "SEK 100,000 – 200,000", ["August", "January"], "https://www.chalmers.se/en"),
+      u("University of Gothenburg (GU)", "Gothenburg", 201, 58, ["Medicine", "Business", "Arts", "Sciences"], "SEK 80,000 – 200,000", ["August", "January"], "https://www.gu.se/en"),
+      u("Linköping University (LiU)", "Linköping", "301–350", 50, ["Engineering", "Medicine", "Business", "IT"], "SEK 80,000 – 180,000", ["August", "January"], "https://liu.se/en"),
+      u("Umeå University", "Umeå", "301–350", 48, ["Medicine", "Sciences", "Architecture", "Business"], "SEK 80,000 – 180,000", ["August", "January"], "https://www.umu.se/en"),
+      u("Stockholm School of Economics (SSE)", "Stockholm", "Top Business School", 15, ["Business", "Economics", "Finance", "Accounting"], "SEK 140,000 – 280,000", ["August"], "https://www.hhs.se/en"),
+    ],
+  },
+
+  // ════════════════════════════════════ LATVIA ════════════════════════════════════
+  {
+    key: "latvia", numericCode: "428", name: "Latvia", flag: "🇱🇻",
+    totalUniversities: 2, currency: "EUR", coordinates: [25, 57],
+    highlights: ["Affordable EU medical programs", "Riga — Baltic startup capital", "EU degree & work rights"],
+    universities: [
+      u("University of Latvia (LU)", "Riga", "1001+", 42, ["Law", "Economics", "Medicine", "Humanities"], "€2,000 – €8,000", ["September"], "https://www.lu.lv/en"),
+      u("Riga Stradiņš University (RSU)", "Riga", "1001+", 28, ["Medicine", "Dentistry", "Pharmacy", "Public Health"], "€7,000 – €14,000", ["September"], "https://www.rsu.lv/en"),
+    ],
+  },
+
+  // ════════════════════════════════════ FRANCE ════════════════════════════════════
+  {
+    key: "france", numericCode: "250", name: "France", flag: "🇫🇷",
+    totalUniversities: 43, currency: "EUR", coordinates: [2.5, 46.5],
+    highlights: ["Home to top Grandes Écoles (HEC, Sciences Po, Polytechnique)", "APS Visa — 1 year post-study job search", "Affordable public university fees"],
+    universities: [
+      u("PSL University (Paris Sciences & Lettres)", "Paris", 24, 70, ["Sciences", "Economics", "Arts", "Engineering"], "€3,000 – €20,000", ["September"], "https://psl.eu/en"),
+      u("Sorbonne University", "Paris", 59, 68, ["Humanities", "Sciences", "Medicine", "Law"], "€2,500 – €15,000", ["September", "January"], "https://www.sorbonne-universite.fr/en"),
+      u("École Polytechnique", "Palaiseau", 50, 38, ["Engineering", "Applied Mathematics", "Physics", "Computer Science"], "€12,000 – €18,000", ["September"], "https://www.polytechnique.edu/en"),
+      u("Sciences Po Paris", "Paris", 194, 45, ["International Affairs", "Law", "Economics", "Political Science"], "€15,000 – £22,000", ["September"], "https://www.sciencespo.fr/en"),
+      u("HEC Paris", "Jouy-en-Josas", "Top 5 Business School globally", 20, ["MBA", "Executive MBA", "Management", "Finance"], "€38,000 – €72,000", ["September", "January"], "https://www.hec.edu/en"),
+      u("INSEAD (Fontainebleau)", "Fontainebleau", "Top 5 MBA globally", 8, ["MBA", "EMBA", "Executive Education"], "€85,000 – €98,000", ["January", "July"], "https://www.insead.edu"),
+      u("University of Paris-Saclay", "Saclay", 15, 65, ["Sciences", "Engineering", "Medicine", "Social Sciences"], "€3,000 – €12,000", ["September"], "https://www.universite-paris-saclay.fr/en"),
+      u("École Normale Supérieure (ENS Paris)", "Paris", 43, 30, ["Sciences", "Mathematics", "Humanities", "Philosophy"], "€3,000 – €10,000", ["September"], "https://www.ens.psl.eu/en"),
+      u("ESSEC Business School", "Cergy / Paris", "Top 20 Business", 18, ["Master in Management", "MBA", "Finance", "Hospitality Management"], "€20,000 – €45,000", ["September", "January"], "https://www.essec.edu/en"),
+      u("EDHEC Business School", "Nice / Lille", "Top 15 Business", 16, ["Master in Finance", "MBA", "Global BBA", "Management"], "€18,000 – €42,000", ["September", "January"], "https://www.edhec.edu/en"),
+      u("EM Lyon Business School", "Lyon", "Top 25 Business", 15, ["Global BBA", "MSc Management", "MBA"], "€16,000 – €35,000", ["September", "January"], "https://em-lyon.com/en"),
+      u("Grenoble École de Management (GEM)", "Grenoble", "Top 30 Business", 14, ["International Business", "MBA", "Marketing", "Finance"], "€15,000 – €32,000", ["September", "January"], "https://en.grenoble-em.com"),
+      u("University of Strasbourg", "Strasbourg", "401–450", 55, ["Law", "Medicine", "Sciences", "Humanities"], "€3,000 – €12,000", ["September"], "https://www.unistra.fr/en"),
+      u("University of Lyon 1 (UCBL)", "Lyon", "401–450", 52, ["Sciences", "Medicine", "Engineering"], "€3,000 – €10,000", ["September"], "https://www.univ-lyon1.fr/en"),
+      u("Université Grenoble Alpes (UGA)", "Grenoble", "301–350", 55, ["Sciences", "Engineering", "Humanities", "Law"], "€3,000 – €10,000", ["September"], "https://www.univ-grenoble-alpes.fr/en"),
+      u("Aix-Marseille University (AMU)", "Marseille", "401–450", 60, ["Medicine", "Law", "Sciences", "Humanities"], "€3,000 – €10,000", ["September"], "https://www.univ-amu.fr/en"),
+      u("SKEMA Business School", "Sophia Antipolis / Paris", "Top 30 Business", 15, ["Global Business", "Finance", "Marketing", "MBA"], "€14,000 – €30,000", ["September", "January"], "https://www.skema.edu/en"),
+      u("KEDGE Business School", "Bordeaux / Marseille", "Top 30 Business", 14, ["International Business", "MBA", "Fashion & Luxury", "Sports Management"], "€13,000 – €28,000", ["September", "January"], "https://kedge.edu/en"),
+      u("IMT Atlantique", "Nantes", "Specialized", 22, ["Engineering", "IT", "Energy", "Telecom"], "€5,000 – €12,000", ["September"], "https://www.imt-atlantique.fr/en"),
+      u("École des Ponts ParisTech", "Paris", "Specialized", 18, ["Civil Engineering", "Mathematics", "IT", "Sciences"], "€8,000 – €18,000", ["September"], "https://www.ecoledesponts.fr/en"),
+    ],
+  },
+
+  // ════════════════════════════════════ ITALY ════════════════════════════════════
+  {
+    key: "italy", numericCode: "380", name: "Italy", flag: "🇮🇹",
+    totalUniversities: 9, currency: "EUR", coordinates: [12.5, 42.5],
+    highlights: ["Low public university fees", "World-best design & fashion schools", "Rich history & cultural immersion"],
+    universities: [
+      u("University of Bologna (UNIBO)", "Bologna", 154, 65, ["Law", "Engineering", "Medicine", "Sciences"], "€2,000 – €10,000", ["October", "March"], "https://www.unibo.it/en"),
+      u("Politecnico di Milano", "Milan", 139, 55, ["Engineering", "Architecture", "Design", "Urban Planning"], "€3,900 – €13,000", ["September", "February"], "https://www.polimi.it/en"),
+      u("Sapienza University of Rome", "Rome", 171, 72, ["Medicine", "Law", "Engineering", "Architecture"], "€2,000 – €10,000", ["October"], "https://www.uniroma1.it/en"),
+      u("Bocconi University", "Milan", "Top 20 Business", 28, ["Business", "Finance", "Economics", "Law"], "€15,000 – €22,000", ["September", "February"], "https://www.unibocconi.eu"),
+      u("University of Padova (UNIPD)", "Padova", 241, 55, ["Medicine", "Engineering", "Law", "Sciences"], "€2,000 – €10,000", ["October"], "https://www.unipd.it/en"),
+      u("Polytechnic University of Turin (Polito)", "Turin", 201, 48, ["Engineering", "Architecture", "Design", "Sciences"], "€3,500 – €12,000", ["September", "February"], "https://www.polito.it/en"),
+      u("University of Milan (La Statale)", "Milan", 249, 65, ["Law", "Medicine", "Sciences", "Humanities"], "€2,000 – €10,000", ["October"], "https://www.unimi.it/en"),
+      u("University of Florence (UNIFI)", "Florence", "351–400", 58, ["Arts", "Architecture", "Law", "Sciences"], "€2,000 – €10,000", ["October"], "https://www.unifi.it/changelang-eng.html"),
+      u("Scuola Normale Superiore (SNS)", "Pisa", "351–400", 18, ["Sciences", "Humanities", "Mathematics", "Physics"], "€1,000 – €5,000", ["October"], "https://www.sns.it/en"),
+    ],
+  },
+
+  // ════════════════════════════════════ MALTA ════════════════════════════════════
+  {
+    key: "malta", numericCode: "470", name: "Malta", flag: "🇲🇹",
+    totalUniversities: 12, currency: "EUR", coordinates: [14.4, 35.9],
+    highlights: ["English-speaking EU island nation", "Unique gaming, blockchain & digital arts hub", "Warm Mediterranean lifestyle"],
+    universities: [
+      u("University of Malta (UOM)", "Msida", "801–1000", 48, ["Medicine", "Law", "Engineering", "Business"], "€5,500 – £12,000", ["October"], "https://www.um.edu.mt"),
+      u("MCAST (Malta College of Arts, Science & Technology)", "Paola", "N/A", 35, ["Business", "IT", "Engineering", "Health"], "€4,000 – €8,000", ["October", "February"], "https://www.mcast.edu.mt"),
+      u("American University of Malta (AUM)", "Cospicua", "1001+", 22, ["Business", "Computer Science", "Arts", "Global Studies"], "$14,000 – $18,000", ["September", "January"], "https://www.aum.edu.mt"),
+      u("EU Business School Malta", "St. Julian's", "Specialized", 15, ["MBA", "Business", "Marketing", "Finance"], "€12,000 – €22,000", ["September", "January"], "https://www.euruni.edu"),
+      u("Global College Malta", "St. Julian's", "Specialized", 18, ["Business", "Hospitality", "Law", "IT"], "€7,000 – €12,000", ["October", "February"], "https://www.gcmalta.edu.mt"),
+    ],
+  },
+
+  // ════════════════════════════════════ SWITZERLAND ════════════════════════════════════
+  {
+    key: "switzerland", numericCode: "756", name: "Switzerland", flag: "🇨🇭",
+    totalUniversities: 23, currency: "CHF", coordinates: [8.2, 47],
+    highlights: ["ETH Zurich — QS World Top 10", "Global banking, pharma & tech HQs", "Very low semester fees at public universities"],
+    universities: [
+      u("ETH Zurich", "Zurich", 7, 58, ["Engineering", "Computer Science", "Architecture", "Natural Sciences"], "CHF 730 – 1,500/semester", ["September", "February"], "https://ethz.ch/en"),
+      u("EPFL (École Polytechnique Fédérale de Lausanne)", "Lausanne", 17, 52, ["Engineering", "Computer Science", "Life Sciences", "Architecture"], "CHF 730 – 1,500/semester", ["September", "February"], "https://www.epfl.ch/en"),
+      u("University of Zurich (UZH)", "Zurich", 83, 65, ["Medicine", "Law", "Economics", "Sciences"], "CHF 720 – 1,200/semester", ["September", "February"], "https://www.uzh.ch/en"),
+      u("University of Basel (UNIBAS)", "Basel", 155, 48, ["Pharma & Chemistry", "Medicine", "Law", "Sciences"], "CHF 720 – 1,200/semester", ["September", "March"], "https://www.unibas.ch/en"),
+      u("University of Bern (UniBE)", "Bern", 148, 52, ["Medicine", "Sciences", "Law", "Humanities"], "CHF 720 – 1,200/semester", ["September", "February"], "https://www.unibe.ch/index_eng.html"),
+      u("University of Geneva (UNIGE)", "Geneva", 107, 55, ["International Relations", "Law", "Sciences", "Medicine"], "CHF 720 – 1,200/semester", ["September", "February"], "https://www.unige.ch/en"),
+      u("University of Lausanne (UNIL)", "Lausanne", 176, 50, ["Business (HEC)", "Law", "Sciences", "Medicine"], "CHF 720 – 1,200/semester", ["September", "February"], "https://www.unil.ch/central/en/home.html"),
+      u("University of St. Gallen (HSG)", "St. Gallen", "Top 10 Business", 25, ["Business", "Economics", "Law", "International Affairs"], "CHF 3,000 – 6,000/semester", ["September", "February"], "https://www.unisg.ch/en"),
+      u("IMD Business School", "Lausanne", "Top 10 MBA globally", 10, ["MBA", "Executive MBA", "Digital Business", "Leadership"], "CHF 90,000 – 110,000", ["January"], "https://www.imd.org"),
+      u("Università della Svizzera italiana (USI)", "Lugano", "501–550", 30, ["Architecture", "Communication", "Economics", "IT"], "CHF 2,000 – 4,000/semester", ["September", "February"], "https://www.usi.ch/en"),
+      u("Zurich University of Applied Sciences (ZHAW)", "Winterthur", "Specialized", 38, ["Engineering", "Business", "Health Sciences", "Design"], "CHF 1,500 – 3,000/semester", ["September", "February"], "https://www.zhaw.ch/en/university"),
+    ],
+  },
+];
+
+export const COUNTRY_BY_KEY = Object.fromEntries(COUNTRIES.map(c => [c.key, c]));
+export const COUNTRY_BY_NUMERIC = Object.fromEntries(COUNTRIES.map(c => [c.numericCode, c]));
+
+export const ENQUIRY_URL = "https://bmglobalcareerscrm.eduabroadcrm.com/forms/Enquiry-Form-vGk1726210863vw";
