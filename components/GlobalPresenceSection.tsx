@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useMemo, useEffect } from "react";
+import { createPortal } from "react-dom";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { COUNTRIES, CountryInfo, University, ENQUIRY_URL } from "@/lib/universityData";
@@ -354,6 +355,11 @@ export default function GlobalPresenceSection() {
   const [selectedCountry, setSelectedCountry] = useState<CountryInfo | null>(null);
   const [activeRegion,    setActiveRegion]    = useState("all");
   const [searchQuery,     setSearchQuery]     = useState("");
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const filteredCountries = useMemo(() => COUNTRIES.filter(c => {
     const matchesRegion  = activeRegion === "all" || (REGION_KEYS[activeRegion]?.includes(c.key) ?? false);
@@ -547,15 +553,18 @@ export default function GlobalPresenceSection() {
       </section>
 
       {/* ── Drawer ── */}
-      <AnimatePresence>
-        {selectedCountry && (
-          <CountryDrawer
-            key="country-drawer"
-            country={selectedCountry}
-            onClose={() => setSelectedCountry(null)}
-          />
-        )}
-      </AnimatePresence>
+      {mounted && createPortal(
+        <AnimatePresence>
+          {selectedCountry && (
+            <CountryDrawer
+              key="country-drawer"
+              country={selectedCountry}
+              onClose={() => setSelectedCountry(null)}
+            />
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </>
   );
 }
