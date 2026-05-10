@@ -186,9 +186,8 @@ function CountryDrawer({ country, onClose }: { country: CountryInfo; onClose: ()
 
   const panelStyle: React.CSSProperties = isMobile
     ? {
-        position: "fixed", left: 0, right: 0, bottom: 0, zIndex: 1001,
-        height: "92svh",
-        maxHeight: "92vh",
+        position: "fixed", left: 0, right: 0, bottom: 0, zIndex: 99999,
+        height: "92vh",
         background: "rgba(10,11,18,0.99)",
         borderTop: "1px solid rgba(255,255,255,0.1)",
         borderRadius: "20px 20px 0 0",
@@ -196,7 +195,7 @@ function CountryDrawer({ country, onClose }: { country: CountryInfo; onClose: ()
         overflow: "hidden",
       }
     : {
-        position: "fixed", top: 0, right: 0, bottom: 0, zIndex: 1001,
+        position: "fixed", top: 0, right: 0, bottom: 0, zIndex: 99999,
         width: "min(540px, 100vw)",
         background: "rgba(10,11,18,0.98)",
         borderLeft: "1px solid rgba(255,255,255,0.08)",
@@ -215,7 +214,7 @@ function CountryDrawer({ country, onClose }: { country: CountryInfo; onClose: ()
       <motion.div
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
         onClick={onClose}
-        style={{ position: "fixed", inset: 0, zIndex: 1000, background: "rgba(0,0,0,0.65)", backdropFilter: "blur(4px)" }}
+        style={{ position: "fixed", inset: 0, zIndex: 99998, background: "rgba(0,0,0,0.65)", backdropFilter: "blur(4px)" }}
       />
 
       {/* Drawer panel */}
@@ -365,8 +364,9 @@ export default function GlobalPresenceSection() {
   const totalUniversities = COUNTRIES.reduce((s, c) => s + c.totalUniversities, 0);
 
   return (
-    <section style={{ padding: "clamp(60px,8vw,120px) 0 clamp(40px,5vw,80px)", background: "var(--bg-0)", position: "relative", overflow: "hidden" }}>
-      {/* Ambient glows */}
+    <>
+      <section style={{ padding: "clamp(60px,8vw,120px) 0 clamp(40px,5vw,80px)", background: "var(--bg-0)", position: "relative", overflow: "hidden" }}>
+        {/* Ambient glows */}
       <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(241,200,82,0.05) 0%, transparent 60%)", pointerEvents: "none" }} />
       <div className="grid-bg" style={{ position: "absolute", inset: 0, opacity: 0.25, pointerEvents: "none" }} />
 
@@ -536,24 +536,26 @@ export default function GlobalPresenceSection() {
         </FadeUp>
       </div>
 
+        <style>{`
+          @keyframes gpSpin { to { transform: rotate(360deg); } }
+          input::placeholder { color: rgba(240,240,240,0.28); }
+          input:focus  { border-color: rgba(241,200,82,0.3) !important; }
+          select option { background: #0d0f16; color: #f0f0f0; }
+          /* hide scrollbar for region pills on webkit */
+          .gps-pills::-webkit-scrollbar { display: none; }
+        `}</style>
+      </section>
+
       {/* ── Drawer ── */}
       <AnimatePresence>
         {selectedCountry && (
           <CountryDrawer
+            key="country-drawer"
             country={selectedCountry}
             onClose={() => setSelectedCountry(null)}
           />
         )}
       </AnimatePresence>
-
-      <style>{`
-        @keyframes gpSpin { to { transform: rotate(360deg); } }
-        input::placeholder { color: rgba(240,240,240,0.28); }
-        input:focus  { border-color: rgba(241,200,82,0.3) !important; }
-        select option { background: #0d0f16; color: #f0f0f0; }
-        /* hide scrollbar for region pills on webkit */
-        .gps-pills::-webkit-scrollbar { display: none; }
-      `}</style>
-    </section>
+    </>
   );
 }
