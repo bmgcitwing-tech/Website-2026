@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef, useMemo, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { COUNTRIES, CountryInfo, University, ENQUIRY_URL } from "@/lib/universityData";
@@ -16,6 +16,17 @@ const MapChart = dynamic(() => import("./MapChart"), {
     </div>
   ),
 });
+
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return isMobile;
+}
 
 // ── Rank badge ──────────────────────────────────────────────────────────────
 function RankBadge({ rank }: { rank: number | string }) {
@@ -152,8 +163,9 @@ function UniversityCard({ uni, index }: { uni: University; index: number }) {
   );
 }
 
-// ── Country side drawer ──────────────────────────────────────────────────────
+// ── Country drawer — bottom-sheet on mobile, side panel on desktop ───────────
 function CountryDrawer({ country, onClose }: { country: CountryInfo; onClose: () => void }) {
+  const isMobile = useIsMobile();
   const [query,  setQuery]  = useState("");
   const [sortBy, setSortBy] = useState<"rank" | "programs">("rank");
 
@@ -172,6 +184,28 @@ function CountryDrawer({ country, onClose }: { country: CountryInfo; onClose: ()
     return list;
   }, [country, query, sortBy]);
 
+  const panelStyle: React.CSSProperties = isMobile
+    ? {
+        position: "fixed", left: 0, right: 0, bottom: 0, zIndex: 1001,
+        height: "90vh",
+        background: "rgba(10,11,18,0.99)",
+        borderTop: "1px solid rgba(255,255,255,0.1)",
+        borderRadius: "20px 20px 0 0",
+        display: "flex", flexDirection: "column",
+      }
+    : {
+        position: "fixed", top: 0, right: 0, bottom: 0, zIndex: 1001,
+        width: "min(540px, 100vw)",
+        background: "rgba(10,11,18,0.98)",
+        borderLeft: "1px solid rgba(255,255,255,0.08)",
+        backdropFilter: "blur(30px)",
+        display: "flex", flexDirection: "column",
+      };
+
+  const drawerMotion = isMobile
+    ? { initial: { y: "100%" }, animate: { y: 0 }, exit: { y: "100%" } }
+    : { initial: { x: "100%" }, animate: { x: 0 }, exit: { x: "100%" } };
+
   return (
     <>
       {/* Backdrop */}
@@ -183,24 +217,24 @@ function CountryDrawer({ country, onClose }: { country: CountryInfo; onClose: ()
 
       {/* Drawer panel */}
       <motion.div
-        initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }}
+        {...drawerMotion}
         transition={{ type: "spring", damping: 30, stiffness: 260 }}
-        style={{
-          position: "fixed", top: 0, right: 0, bottom: 0, zIndex: 1001,
-          width: "min(540px, 100vw)",
-          background: "rgba(10,11,18,0.98)",
-          borderLeft: "1px solid rgba(255,255,255,0.08)",
-          backdropFilter: "blur(30px)",
-          display: "flex", flexDirection: "column",
-        }}
+        style={panelStyle}
       >
+        {/* Mobile drag handle */}
+        {isMobile && (
+          <div style={{ display: "flex", justifyContent: "center", padding: "10px 0 4px" }}>
+            <div style={{ width: 40, height: 4, borderRadius: 2, background: "rgba(255,255,255,0.18)" }} />
+          </div>
+        )}
+
         {/* Header */}
-        <div style={{ padding: "22px 22px 16px", borderBottom: "1px solid rgba(255,255,255,0.06)", flexShrink: 0 }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <span style={{ fontSize: 34, lineHeight: 1 }}>{country.flag}</span>
+        <div style={{ padding: isMobile ? "12px 18px 14px" : "22px 22px 16px", borderBottom: "1px solid rgba(255,255,255,0.06)", flexShrink: 0 }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <span style={{ fontSize: isMobile ? 28 : 34, lineHeight: 1 }}>{country.flag}</span>
               <div>
-                <h3 style={{ fontSize: 20, fontWeight: 800, color: "#f0f0f0", lineHeight: 1.1 }}>{country.name}</h3>
+                <h3 style={{ fontSize: isMobile ? 17 : 20, fontWeight: 800, color: "#f0f0f0", lineHeight: 1.1 }}>{country.name}</h3>
                 <p style={{ fontSize: 12, color: "rgba(241,200,82,0.8)", marginTop: 2, fontWeight: 600 }}>
                   {country.totalUniversities} partner universities
                 </p>
@@ -211,17 +245,19 @@ function CountryDrawer({ country, onClose }: { country: CountryInfo; onClose: ()
             </button>
           </div>
 
-          {/* Highlights */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 5, marginBottom: 14 }}>
-            {country.highlights.map((h, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 7 }}>
-                <div style={{ minWidth: 16, height: 16, borderRadius: "50%", background: "rgba(241,200,82,0.1)", border: "1px solid rgba(241,200,82,0.25)", display: "flex", alignItems: "center", justifyContent: "center", marginTop: 1, flexShrink: 0 }}>
-                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="#f1c852" strokeWidth="2"><path d="M1 4l2 2L7 1.5"/></svg>
+          {/* Highlights — hidden on mobile to save space */}
+          {!isMobile && (
+            <div style={{ display: "flex", flexDirection: "column", gap: 5, marginBottom: 14 }}>
+              {country.highlights.map((h, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 7 }}>
+                  <div style={{ minWidth: 16, height: 16, borderRadius: "50%", background: "rgba(241,200,82,0.1)", border: "1px solid rgba(241,200,82,0.25)", display: "flex", alignItems: "center", justifyContent: "center", marginTop: 1, flexShrink: 0 }}>
+                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="#f1c852" strokeWidth="2"><path d="M1 4l2 2L7 1.5"/></svg>
+                  </div>
+                  <span style={{ fontSize: 11, color: "rgba(240,240,240,0.55)", lineHeight: 1.5 }}>{h}</span>
                 </div>
-                <span style={{ fontSize: 11, color: "rgba(240,240,240,0.55)", lineHeight: 1.5 }}>{h}</span>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* Search + sort bar */}
           <div style={{ display: "flex", gap: 8 }}>
@@ -232,25 +268,25 @@ function CountryDrawer({ country, onClose }: { country: CountryInfo; onClose: ()
                 placeholder="Search universities…"
                 value={query}
                 onChange={e => setQuery(e.target.value)}
-                style={{ width: "100%", paddingLeft: 28, paddingRight: 10, paddingTop: 7, paddingBottom: 7, borderRadius: 9, fontSize: 12, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)", color: "#f0f0f0", outline: "none" }}
+                style={{ width: "100%", paddingLeft: 28, paddingRight: 10, paddingTop: 8, paddingBottom: 8, borderRadius: 9, fontSize: 13, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)", color: "#f0f0f0", outline: "none" }}
               />
             </div>
             <select
               value={sortBy}
               onChange={e => setSortBy(e.target.value as "rank" | "programs")}
-              style={{ padding: "7px 10px", borderRadius: 9, fontSize: 11, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)", color: "rgba(240,240,240,0.7)", cursor: "pointer", outline: "none" }}
+              style={{ padding: "8px 10px", borderRadius: 9, fontSize: 12, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)", color: "rgba(240,240,240,0.7)", cursor: "pointer", outline: "none", flexShrink: 0 }}
             >
-              <option value="rank">Sort: Ranking</option>
-              <option value="programs">Sort: Programmes</option>
+              <option value="rank">Ranking</option>
+              <option value="programs">Programmes</option>
             </select>
           </div>
-          <div style={{ marginTop: 8, fontSize: 11, color: "rgba(240,240,240,0.35)" }}>
-            Showing {filtered.length} of {country.universities.length} listed · <span style={{ color: "rgba(241,200,82,0.6)" }}>click any card to expand</span>
+          <div style={{ marginTop: 7, fontSize: 11, color: "rgba(240,240,240,0.35)" }}>
+            {filtered.length} of {country.universities.length} listed · <span style={{ color: "rgba(241,200,82,0.6)" }}>tap card to expand</span>
           </div>
         </div>
 
         {/* University list */}
-        <div style={{ flex: 1, overflowY: "auto", padding: "14px 16px 24px" }}>
+        <div style={{ flex: 1, overflowY: "auto", padding: isMobile ? "12px 14px 32px" : "14px 16px 24px", WebkitOverflowScrolling: "touch" } as React.CSSProperties}>
           {filtered.length === 0 ? (
             <div style={{ textAlign: "center", padding: "32px 0", color: "rgba(240,240,240,0.3)", fontSize: 13 }}>
               No universities match "{query}"
@@ -260,7 +296,7 @@ function CountryDrawer({ country, onClose }: { country: CountryInfo; onClose: ()
           )}
 
           {/* Bottom CTA */}
-          <div style={{ marginTop: 12, padding: "18px 18px", borderRadius: 14, background: "rgba(241,200,82,0.04)", border: "1px solid rgba(241,200,82,0.12)", textAlign: "center" }}>
+          <div style={{ marginTop: 12, padding: "18px", borderRadius: 14, background: "rgba(241,200,82,0.04)", border: "1px solid rgba(241,200,82,0.12)", textAlign: "center" }}>
             <p style={{ fontSize: 12, color: "rgba(240,240,240,0.5)", marginBottom: 12, lineHeight: 1.55 }}>
               Want the complete list of <strong style={{ color: "#f1c852" }}>{country.totalUniversities} universities</strong> in {country.name} with a personalised shortlist?
             </p>
@@ -312,6 +348,7 @@ const REGION_KEYS: Record<string, string[]> = {
 
 // ── Main exported section ────────────────────────────────────────────────────
 export default function GlobalPresenceSection() {
+  const isMobile = useIsMobile();
   const [selectedCountry, setSelectedCountry] = useState<CountryInfo | null>(null);
   const [activeRegion,    setActiveRegion]    = useState("all");
   const [searchQuery,     setSearchQuery]     = useState("");
@@ -325,32 +362,32 @@ export default function GlobalPresenceSection() {
   const totalUniversities = COUNTRIES.reduce((s, c) => s + c.totalUniversities, 0);
 
   return (
-    <section style={{ padding: "120px 0 80px", background: "var(--bg-0)", position: "relative", overflow: "hidden" }}>
+    <section style={{ padding: "clamp(60px,8vw,120px) 0 clamp(40px,5vw,80px)", background: "var(--bg-0)", position: "relative", overflow: "hidden" }}>
       {/* Ambient glows */}
       <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(241,200,82,0.05) 0%, transparent 60%)", pointerEvents: "none" }} />
       <div className="grid-bg" style={{ position: "absolute", inset: 0, opacity: 0.25, pointerEvents: "none" }} />
 
-      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 1 }}>
+      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 clamp(16px,4vw,24px)", position: "relative", zIndex: 1 }}>
 
         {/* ── Section header ── */}
         <FadeUp>
-          <div style={{ textAlign: "center", marginBottom: 56 }}>
+          <div style={{ textAlign: "center", marginBottom: isMobile ? 36 : 56 }}>
             <div className="tag" style={{ display: "inline-flex", marginBottom: 14 }}>Global Reach</div>
-            <h2 style={{ fontSize: "clamp(30px, 4.5vw, 56px)", fontWeight: 800, color: "#f0f0f0", marginBottom: 14, lineHeight: 1.1 }}>
+            <h2 style={{ fontSize: "clamp(26px, 4.5vw, 56px)", fontWeight: 800, color: "#f0f0f0", marginBottom: 14, lineHeight: 1.1 }}>
               Study in <span className="gold-text">42+ Countries</span> Worldwide
             </h2>
-            <p style={{ fontSize: 17, color: "var(--muted)", maxWidth: 560, margin: "0 auto", lineHeight: 1.7 }}>
+            <p style={{ fontSize: "clamp(14px,2vw,17px)", color: "var(--muted)", maxWidth: 560, margin: "0 auto", lineHeight: 1.7 }}>
               Click any glowing country on the map — or use the cards below — to explore ranked universities, programmes, fees and book a free counselling appointment.
             </p>
-            <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: 32, marginTop: 28 }}>
+            <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: isMobile ? 20 : 32, marginTop: 24 }}>
               {[
                 { value: "42",           label: "Countries" },
                 { value: `${totalUniversities}+`, label: "Partner Universities" },
                 { value: "1,200+",       label: "Programmes Listed" },
               ].map(s => (
                 <div key={s.label} style={{ textAlign: "center" }}>
-                  <div style={{ fontSize: 30, fontWeight: 900, color: "#f1c852" }}>{s.value}</div>
-                  <div style={{ fontSize: 12, color: "rgba(240,240,240,0.4)", marginTop: 2 }}>{s.label}</div>
+                  <div style={{ fontSize: isMobile ? 24 : 30, fontWeight: 900, color: "#f1c852" }}>{s.value}</div>
+                  <div style={{ fontSize: 11, color: "rgba(240,240,240,0.4)", marginTop: 2 }}>{s.label}</div>
                 </div>
               ))}
             </div>
@@ -359,26 +396,30 @@ export default function GlobalPresenceSection() {
 
         {/* ── Interactive world map ── */}
         <FadeUp delay={0.1}>
-          <div style={{ position: "relative", borderRadius: 24, overflow: "hidden", border: "1px solid rgba(255,255,255,0.07)", background: "rgba(8,12,24,0.85)", marginBottom: 20 }}>
+          <div style={{ position: "relative", borderRadius: isMobile ? 16 : 24, overflow: "hidden", border: "1px solid rgba(255,255,255,0.07)", background: "rgba(8,12,24,0.85)", marginBottom: 16 }}>
             {/* Legend */}
-            <div style={{ position: "absolute", top: 14, left: 14, zIndex: 10, display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <div style={{ width: 10, height: 10, borderRadius: 2, background: "rgba(241,200,82,0.22)", border: "1px solid rgba(241,200,82,0.5)" }} />
-                <span style={{ fontSize: 11, color: "rgba(240,240,240,0.45)" }}>Partner country</span>
+            <div style={{ position: "absolute", top: 10, left: 10, zIndex: 10, display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                <div style={{ width: 9, height: 9, borderRadius: 2, background: "rgba(241,200,82,0.22)", border: "1px solid rgba(241,200,82,0.5)" }} />
+                <span style={{ fontSize: 10, color: "rgba(240,240,240,0.45)" }}>Partner country</span>
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <div style={{ width: 10, height: 10, borderRadius: 2, background: "#f1c852" }} />
-                <span style={{ fontSize: 11, color: "rgba(240,240,240,0.45)" }}>Selected</span>
-              </div>
-            </div>
-            {/* Controls hint */}
-            <div style={{ position: "absolute", top: 14, right: 60, zIndex: 10 }}>
-              <div style={{ fontSize: 10, color: "rgba(240,240,240,0.3)", background: "rgba(0,0,0,0.35)", padding: "3px 9px", borderRadius: 20, border: "1px solid rgba(255,255,255,0.05)" }}>
-                Scroll / pinch to zoom · Drag to pan · Click country or marker
+              <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                <div style={{ width: 9, height: 9, borderRadius: 2, background: "#f1c852" }} />
+                <span style={{ fontSize: 10, color: "rgba(240,240,240,0.45)" }}>Selected</span>
               </div>
             </div>
+
+            {/* Controls hint — desktop only */}
+            {!isMobile && (
+              <div style={{ position: "absolute", top: 14, right: 60, zIndex: 10 }}>
+                <div style={{ fontSize: 10, color: "rgba(240,240,240,0.3)", background: "rgba(0,0,0,0.35)", padding: "3px 9px", borderRadius: 20, border: "1px solid rgba(255,255,255,0.05)" }}>
+                  Scroll / pinch to zoom · Drag to pan · Click country or marker
+                </div>
+              </div>
+            )}
+
             {/* Map canvas */}
-            <div style={{ height: "clamp(300px, 44vw, 510px)" }}>
+            <div style={{ height: isMobile ? "clamp(220px,65vw,340px)" : "clamp(300px,44vw,510px)" }}>
               <MapChart
                 onCountryClick={setSelectedCountry}
                 selectedKey={selectedCountry?.key ?? null}
@@ -390,12 +431,22 @@ export default function GlobalPresenceSection() {
         {/* ── Country cards grid ── */}
         <FadeUp delay={0.15}>
           {/* Filter + search bar */}
-          <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: 10, marginBottom: 18, justifyContent: "space-between" }}>
-            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+          <div style={{ marginBottom: 14 }}>
+            {/* Region pills — horizontal scroll on mobile */}
+            <div style={{
+              display: "flex",
+              gap: 6,
+              overflowX: "auto",
+              WebkitOverflowScrolling: "touch",
+              scrollbarWidth: "none",
+              paddingBottom: 4,
+              marginBottom: 10,
+            } as React.CSSProperties}>
               {REGIONS.map(r => (
                 <button key={r.key} onClick={() => setActiveRegion(r.key)}
                   style={{
-                    padding: "6px 14px", borderRadius: 20, fontSize: 12, fontWeight: 600, cursor: "pointer", border: "none",
+                    padding: "6px 14px", borderRadius: 20, fontSize: 12, fontWeight: 600,
+                    cursor: "pointer", border: "none", flexShrink: 0,
                     background: activeRegion === r.key ? "#f1c852" : "rgba(255,255,255,0.05)",
                     color: activeRegion === r.key ? "#080910" : "rgba(240,240,240,0.6)",
                     transition: "all 0.18s",
@@ -405,19 +456,21 @@ export default function GlobalPresenceSection() {
                 </button>
               ))}
             </div>
-            <div style={{ position: "relative" }}>
+
+            {/* Search input — full width on mobile */}
+            <div style={{ position: "relative", width: isMobile ? "100%" : 200 }}>
               <svg style={{ position: "absolute", left: 9, top: "50%", transform: "translateY(-50%)" }} width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="rgba(240,240,240,0.3)" strokeWidth="1.8"><circle cx="5" cy="5" r="3.5"/><path d="M9 9l2 2"/></svg>
               <input
                 type="text" placeholder="Search country…"
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                style={{ paddingLeft: 28, paddingRight: 12, paddingTop: 7, paddingBottom: 7, borderRadius: 20, fontSize: 12, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)", color: "#f0f0f0", outline: "none", width: 175 }}
+                style={{ paddingLeft: 28, paddingRight: 12, paddingTop: 8, paddingBottom: 8, borderRadius: 20, fontSize: 13, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)", color: "#f0f0f0", outline: "none", width: "100%" }}
               />
             </div>
           </div>
 
           {/* Cards */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(170px, 1fr))", gap: 10 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(auto-fill, minmax(140px, 1fr))" : "repeat(auto-fill, minmax(170px, 1fr))", gap: isMobile ? 8 : 10 }}>
             <AnimatePresence>
               {filteredCountries.map((country, i) => (
                 <motion.button
@@ -432,19 +485,19 @@ export default function GlobalPresenceSection() {
                   style={{
                     background: selectedCountry?.key === country.key ? "rgba(241,200,82,0.1)" : "rgba(255,255,255,0.03)",
                     border: `1px solid ${selectedCountry?.key === country.key ? "rgba(241,200,82,0.35)" : "rgba(255,255,255,0.07)"}`,
-                    borderRadius: 13, padding: "14px 13px", textAlign: "left",
+                    borderRadius: 13, padding: isMobile ? "12px 11px" : "14px 13px", textAlign: "left",
                     cursor: "pointer", transition: "border-color 0.18s, background 0.18s",
                     display: "flex", flexDirection: "column", gap: 5,
                   }}
                 >
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                    <span style={{ fontSize: 22 }}>{country.flag}</span>
+                    <span style={{ fontSize: isMobile ? 20 : 22 }}>{country.flag}</span>
                     <span style={{ fontSize: 11, fontWeight: 700, color: "#f1c852", background: "rgba(241,200,82,0.1)", padding: "2px 6px", borderRadius: 20 }}>
                       {country.totalUniversities}
                     </span>
                   </div>
-                  <div style={{ fontSize: 12, fontWeight: 600, color: "#f0f0f0", lineHeight: 1.2 }}>{country.name}</div>
-                  <div style={{ fontSize: 10, color: "rgba(240,240,240,0.38)" }}>{country.universities.length} listed · click to view</div>
+                  <div style={{ fontSize: isMobile ? 11 : 12, fontWeight: 600, color: "#f0f0f0", lineHeight: 1.2 }}>{country.name}</div>
+                  <div style={{ fontSize: 10, color: "rgba(240,240,240,0.38)" }}>{country.universities.length} listed</div>
                 </motion.button>
               ))}
             </AnimatePresence>
@@ -459,15 +512,15 @@ export default function GlobalPresenceSection() {
 
         {/* ── Bottom CTA strip ── */}
         <FadeUp delay={0.2}>
-          <div style={{ marginTop: 48, padding: "36px 28px", borderRadius: 22, background: "rgba(241,200,82,0.04)", border: "1px solid rgba(241,200,82,0.12)", textAlign: "center", position: "relative", overflow: "hidden" }}>
+          <div style={{ marginTop: isMobile ? 32 : 48, padding: isMobile ? "28px 20px" : "36px 28px", borderRadius: isMobile ? 18 : 22, background: "rgba(241,200,82,0.04)", border: "1px solid rgba(241,200,82,0.12)", textAlign: "center", position: "relative", overflow: "hidden" }}>
             <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 60% 60% at 50% 100%, rgba(241,200,82,0.06), transparent)", pointerEvents: "none" }} />
-            <h3 style={{ fontSize: "clamp(19px, 3vw, 30px)", fontWeight: 800, color: "#f0f0f0", marginBottom: 10, position: "relative" }}>
-              Can't find your dream destination?
+            <h3 style={{ fontSize: "clamp(17px, 3vw, 30px)", fontWeight: 800, color: "#f0f0f0", marginBottom: 10, position: "relative" }}>
+              Can&apos;t find your dream destination?
             </h3>
-            <p style={{ fontSize: 15, color: "rgba(240,240,240,0.5)", marginBottom: 24, maxWidth: 460, margin: "0 auto 24px", lineHeight: 1.7, position: "relative" }}>
+            <p style={{ fontSize: "clamp(13px,1.8vw,15px)", color: "rgba(240,240,240,0.5)", marginBottom: 24, maxWidth: 460, margin: "0 auto 24px", lineHeight: 1.7, position: "relative" }}>
               Our counsellors cover 42+ countries and 1,200+ programmes. Book a free session and get a personalised university shortlist within 24 hours.
             </p>
-            <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", position: "relative" }}>
+            <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap", position: "relative" }}>
               <a href={ENQUIRY_URL} target="_blank" rel="noopener noreferrer" className="btn-gold">
                 Book Free Counselling
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M3 7h8M8 3.5L11.5 7 8 10.5"/></svg>
@@ -495,6 +548,8 @@ export default function GlobalPresenceSection() {
         input::placeholder { color: rgba(240,240,240,0.28); }
         input:focus  { border-color: rgba(241,200,82,0.3) !important; }
         select option { background: #0d0f16; color: #f0f0f0; }
+        /* hide scrollbar for region pills on webkit */
+        .gps-pills::-webkit-scrollbar { display: none; }
       `}</style>
     </section>
   );
