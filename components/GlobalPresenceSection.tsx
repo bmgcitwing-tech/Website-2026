@@ -187,11 +187,13 @@ function CountryDrawer({ country, onClose }: { country: CountryInfo; onClose: ()
   const panelStyle: React.CSSProperties = isMobile
     ? {
         position: "fixed", left: 0, right: 0, bottom: 0, zIndex: 1001,
-        height: "90vh",
+        height: "92svh",
+        maxHeight: "92vh",
         background: "rgba(10,11,18,0.99)",
         borderTop: "1px solid rgba(255,255,255,0.1)",
         borderRadius: "20px 20px 0 0",
         display: "flex", flexDirection: "column",
+        overflow: "hidden",
       }
     : {
         position: "fixed", top: 0, right: 0, bottom: 0, zIndex: 1001,
@@ -200,6 +202,7 @@ function CountryDrawer({ country, onClose }: { country: CountryInfo; onClose: ()
         borderLeft: "1px solid rgba(255,255,255,0.08)",
         backdropFilter: "blur(30px)",
         display: "flex", flexDirection: "column",
+        overflow: "hidden",
       };
 
   const drawerMotion = isMobile
@@ -229,7 +232,7 @@ function CountryDrawer({ country, onClose }: { country: CountryInfo; onClose: ()
         )}
 
         {/* Header */}
-        <div style={{ padding: isMobile ? "12px 18px 14px" : "22px 22px 16px", borderBottom: "1px solid rgba(255,255,255,0.06)", flexShrink: 0 }}>
+        <div style={{ padding: isMobile ? "10px 16px 12px" : "22px 22px 16px", borderBottom: "1px solid rgba(255,255,255,0.06)", flexShrink: 0 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <span style={{ fontSize: isMobile ? 28 : 34, lineHeight: 1 }}>{country.flag}</span>
@@ -286,7 +289,7 @@ function CountryDrawer({ country, onClose }: { country: CountryInfo; onClose: ()
         </div>
 
         {/* University list */}
-        <div style={{ flex: 1, overflowY: "auto", padding: isMobile ? "12px 14px 32px" : "14px 16px 24px", WebkitOverflowScrolling: "touch" } as React.CSSProperties}>
+        <div style={{ flex: 1, minHeight: 0, overflowY: "auto", overscrollBehavior: "contain", padding: isMobile ? "12px 14px 32px" : "14px 16px 24px", WebkitOverflowScrolling: "touch" } as React.CSSProperties}>
           {filtered.length === 0 ? (
             <div style={{ textAlign: "center", padding: "32px 0", color: "rgba(240,240,240,0.3)", fontSize: 13 }}>
               No universities match "{query}"
