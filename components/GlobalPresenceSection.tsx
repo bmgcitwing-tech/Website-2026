@@ -165,8 +165,7 @@ function UniversityCard({ uni, index }: { uni: University; index: number }) {
 }
 
 // ── Country drawer — bottom-sheet on mobile, side panel on desktop ───────────
-function CountryDrawer({ country, onClose }: { country: CountryInfo; onClose: () => void }) {
-  const isMobile = useIsMobile();
+function CountryDrawer({ country, isMobile, onClose }: { country: CountryInfo; isMobile: boolean; onClose: () => void }) {
   const [query,  setQuery]  = useState("");
   const [sortBy, setSortBy] = useState<"rank" | "programs">("rank");
 
@@ -206,8 +205,8 @@ function CountryDrawer({ country, onClose }: { country: CountryInfo; onClose: ()
       };
 
   const drawerMotion = isMobile
-    ? { initial: { y: "100%" }, animate: { y: 0 }, exit: { y: "100%" } }
-    : { initial: { x: "100%" }, animate: { x: 0 }, exit: { x: "100%" } };
+    ? { initial: { y: "100%", x: 0 }, animate: { y: 0, x: 0 }, exit: { y: "100%", x: 0 } }
+    : { initial: { x: "100%", y: 0 }, animate: { x: 0, y: 0 }, exit: { x: "100%", y: 0 } };
 
   return (
     <>
@@ -559,6 +558,7 @@ export default function GlobalPresenceSection() {
             <CountryDrawer
               key="country-drawer"
               country={selectedCountry}
+              isMobile={isMobile}
               onClose={() => setSelectedCountry(null)}
             />
           )}
